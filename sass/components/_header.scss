@@ -1,0 +1,25 @@
+.main-header-text {
+    font-size: 2rem;
+}
+
+.seperator-line {
+    border-left: 2px solid black;
+    height: 2rem;
+    max-height: 100%;
+}
+
+nav {
+    ul {
+        li {
+            a {
+                font-size: 1.25rem;
+
+                &:hover {
+                    border-bottom: 1px solid grey;
+                    transition: all 100ms ease-in-out;
+                    color: grey;
+                }
+            }
+        }
+    }
+}
