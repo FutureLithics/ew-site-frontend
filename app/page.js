@@ -96,11 +96,9 @@ const Home = async () => {
 
 	// if data.success is false, redirect to error page or render error message
 
-	console.log(data.content)
-
 	return (
 		<main className="w-screen flex min-h-screen flex-col items-center justify-between p-24">
-			<FrontPageWidget content={data.content[0]}/>
+			{data.content && <FrontPageWidget content={data.content[0]}/>}
 		</main>
 	)
 }
