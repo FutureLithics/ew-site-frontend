@@ -23,11 +23,13 @@ const ContactListItems = ({sections}) => {
 
 const MainContentSection = ({content}) => {
 	const parseContent = content.map(item => {
-		const text = item?.children[0].text;
+		if(item?.children){
+			const text = item.children[0].text;
 
-		return {
-			type: item.type,
-			text: text
+			return {
+				type: item.type,
+				text: text
+			}			
 		}
 	})
 
