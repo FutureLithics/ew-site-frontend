@@ -26,7 +26,7 @@ const MobileNavigation = ({ navElements }) => {
             <button onClick={() => setToggle(!toggle)}>
                 <Hamburger toggle={toggle} />
             </button>
-            <ul className={`absolute top-16 ${toggle ? 'flex' : 'hidden'} flex-col w-screen h-screen content-center`}>
+            <ul className={`absolute top-16 ${toggle ? 'flex' : 'hidden'} flex-col w-screen h-screen content-center z-50`}>
                 {navElements.map( el => {
                     return (
                         <li key={el.name} className="self-center px-2 sm:px-4 py-2 text-lg font-bold">

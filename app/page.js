@@ -98,7 +98,7 @@ const Home = async () => {
 
 	return (
 		<main className="w-screen flex min-h-screen flex-col items-center justify-between p-24">
-			{data.content && <FrontPageWidget content={data.content[0]}/>}
+			{data.content !== undefined && <FrontPageWidget content={data.content[0]}/>}
 		</main>
 	)
 }
