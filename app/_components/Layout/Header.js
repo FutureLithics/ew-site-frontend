@@ -1,13 +1,13 @@
 'use client'
 
-import Navigation from "./Navigation";
-import MobileNavigation from "./MobileNavigation";
+import Navigation from "../Navigation/Navigation";
+import MobileNavigation from "../Navigation/MobileNavigation";
 
 const navigationElements = [
     {link: '/', name: 'CV & Contact'},
-    {link: '/', name: 'Data'},
-    {link: '/', name: 'Research'},
-    {link: '/', name: 'In the News'},
+    {link: '/data', name: 'Data'},
+    {link: '/research', name: 'Research'},
+    {link: '/blog', name: 'In the News'},
 ];
 
 const Header = () => {

@@ -45,7 +45,7 @@ const MainContentSection = ({content}) => {
 						);
 					} else {
 						return (
-							<p className="font-medium text-md text-slate-900">
+							<p className="font-medium text-md text-slate-900 pb-2">
 								{item.text}
 							</p>
 						);
@@ -102,5 +102,7 @@ const Home = async () => {
 		</main>
 	)
 }
+
+export const revalidate = 10;
 
 export default Home;
