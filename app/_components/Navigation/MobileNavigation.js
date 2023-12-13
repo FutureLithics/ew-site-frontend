@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from "next/navigation";
 
 const Hamburger = ({toggle}) => {
 
@@ -19,6 +20,7 @@ const Hamburger = ({toggle}) => {
 }
 
 const MobileNavigation = ({ navElements }) => {
+    const pathname = usePathname();
     const [ toggle, setToggle ] = useState(false);
 
     return (
@@ -28,9 +30,12 @@ const MobileNavigation = ({ navElements }) => {
             </button>
             <ul className={`absolute top-16 ${toggle ? 'flex' : 'hidden'} flex-col w-screen h-screen content-center z-50`}>
                 {navElements.map( el => {
+                    const active = el.link == pathname ? 'active' : '';
+                    const linkClasses = `${active} self-center mx-2 sm:mx-4 py-2 text-lg font-bold`;
+
                     return (
-                        <li key={el.name} className="self-center px-2 sm:px-4 py-2 text-lg font-bold">
-                            <Link href={el.link}>
+                        <li key={el.name} className="flex">
+                            <Link href={el.link} className={linkClasses}>
                                 {el.name}
                             </Link>
                         </li>

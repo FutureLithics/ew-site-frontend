@@ -21,9 +21,12 @@ nav {
         li {
             a {
                 &:hover {
-                    border-bottom: 1px solid grey;
                     transition: all 100ms ease-in-out;
                     color: grey;
+                }
+
+                &.active {
+                    border-bottom: 1px solid grey;
                 }
             }
         }
