@@ -1,4 +1,7 @@
-import Link from 'next/link';
+'use client'
+
+import Navigation from "./Navigation";
+import MobileNavigation from "./MobileNavigation";
 
 const navigationElements = [
     {link: '/', name: 'CV & Contact'},
@@ -9,24 +12,13 @@ const navigationElements = [
 
 const Header = () => {
     return (
-        <header className="header container flex p-5 content-center">
-            <h1 className="font-serif font-extrabold main-header-text">
+        <header className="w-100 header flex p-5 content-center shadow-md shadow-zinc">
+            <h1 className="flex font-serif font-extrabold content-center main-header-text pe-2 py-2 sm:pe-4 text-2xl">
                 Emily Williams
             </h1>
-            <div className="seperator-line mx-4 py-1 self-center"></div>
-            <nav>
-                <ul className="h-full flex content-center">
-                    {navigationElements.map( el => {
-                        return (
-                            <li className="self-center px-4 py-2 font-bold">
-                                <Link href={el.link}>
-                                    {el.name}
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </nav>
+            <div className="hidden md:block seperator-line mx-4 py-1 self-center"></div>
+            <Navigation navElements={navigationElements}/>
+            <MobileNavigation navElements={navigationElements}/>
         </header>
     );
 }

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'base/mixins';
 @import 'base/base';
 @import 'base/typography';
 

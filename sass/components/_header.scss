@@ -1,19 +1,25 @@
-.main-header-text {
-    font-size: 2rem;
-}
-
 .seperator-line {
     border-left: 2px solid black;
     height: 2rem;
     max-height: 100%;
 }
 
+.mobile-navigation {
+    .ham-line {
+        margin-top: 0.15rem;
+        margin-bottom: 0.15rem;
+    }
+
+    ul {
+        background-color: white;
+        right: -1.25rem;
+    }
+}
+
 nav {
     ul {
         li {
             a {
-                font-size: 1.25rem;
-
                 &:hover {
                     border-bottom: 1px solid grey;
                     transition: all 100ms ease-in-out;
