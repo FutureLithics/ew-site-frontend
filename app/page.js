@@ -73,7 +73,7 @@ const FrontPageWidget = ({ content }) => {
 				<div className="flex flex-col justify-center content-center">
 					<div className="relative w-40 h-40 self-center rounded-full overflow-hidden flex content-center justify-center border-2 border-slate-200">
 						<img
-							className="absolute w-36"
+							className="absolute w-36 z-20"
 							src={`${baseURL}${photoAtt?.url}`} 
 							alt={photoAtt?.alternativeTex}
 						/>						
@@ -98,7 +98,7 @@ const Home = async () => {
 
 	return (
 		<main className="w-screen flex min-h-screen flex-col items-center justify-between p-24">
-			{data.content && <FrontPageWidget content={data.content[0]}/>}
+			{data.content !== undefined && <FrontPageWidget content={data.content[0]}/>}
 		</main>
 	)
 }
