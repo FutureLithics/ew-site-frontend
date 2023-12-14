@@ -1,5 +1,6 @@
 import {fetchPageData} from './utils/api';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/solid';
+import ReactMarkdown from 'react-markdown'
 
 const ContactListItems = ({sections}) => {
 	return (
@@ -22,43 +23,16 @@ const ContactListItems = ({sections}) => {
 }
 
 const MainContentSection = ({content}) => {
-	const parseContent = content.map(item => {
-		if(item?.children){
-			const text = item.children[0].text;
-
-			return {
-				type: item.type,
-				text: text
-			}			
-		}
-	})
-
 	return (
-		<div>
-			{
-				parseContent.map((item) => {
-					if (item.type == 'heading') {
-						return (
-							<h3 className="font-bold text-3xl text-slate-400 mb-2">
-								{item.text}
-							</h3>
-						);
-					} else {
-						return (
-							<p className="font-medium text-md text-slate-900 pb-2">
-								{item.text}
-							</p>
-						);
-					}
-				})
-			}
-		</div>
+		<>
+			<ReactMarkdown className="rich-text prose">{content}</ReactMarkdown>
+		</>
 	)
 }
 
 const FrontPageWidget = ({ content }) => {
 	const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-	const { MainIntro, Photo, Header } = content;
+	const { MainIntroClassic, Photo, Header } = content;
 	const photoAtt = Photo?.data?.attributes;
 
 	const contactSections = [
@@ -69,7 +43,7 @@ const FrontPageWidget = ({ content }) => {
 
 	return (
 		<div className="front-page-widget flex flex-col md:flex-row ">
-			<div className="flex flex-col content-center px-4 left-side pb-2 sm:pb-0">
+			<div className="flex flex-col content-center px-4 left-side pb-12 sm:pb-0">
 				<div className="flex flex-col justify-center content-center">
 					<div className="relative w-40 h-40 self-center rounded-full overflow-hidden flex content-center justify-center border-2 border-slate-200">
 						<img
@@ -82,8 +56,8 @@ const FrontPageWidget = ({ content }) => {
 					<ContactListItems sections={contactSections} />
 				</div>
 			</div>
-			<div className="flex flex-col justify-start pt-4 px-4">
-				<MainContentSection content={MainIntro} />
+			<div className="flex flex-col justify-start pt-0 px-4">
+				<MainContentSection content={MainIntroClassic} />
 			</div>
 		</div>	
 	);
@@ -97,7 +71,7 @@ const Home = async () => {
 	// if data.success is false, redirect to error page or render error message
 
 	return (
-		<main className="w-screen flex min-h-screen flex-col items-center justify-between p-24">
+		<main className="w-screen flex min-h-screen flex-col items-center justify-between p-12 sm:p-24">
 			{data.content !== undefined && <FrontPageWidget content={data.content[0]}/>}
 		</main>
 	)
