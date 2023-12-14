@@ -35,7 +35,6 @@ const MainContentSection = ({content}) => {
 }
 
 const FrontPageWidget = ({ content }) => {
-	const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 	const { MainIntroClassic, Photo, Header } = content;
 	const photoAtt = Photo?.data?.attributes;
 
@@ -52,7 +51,7 @@ const FrontPageWidget = ({ content }) => {
 					<div className="relative w-40 h-40 self-center rounded-full overflow-hidden flex content-center justify-center border-2 border-slate-200">
 						<img
 							className="absolute w-36 z-20"
-							src={`${baseURL}${photoAtt?.url}`} 
+							src={`${photoAtt?.url}`} 
 							alt={photoAtt?.alternativeTex}
 						/>						
 					</div>
