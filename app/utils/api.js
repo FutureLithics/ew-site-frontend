@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchPageData = async (id = 1) => {
     const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-    const url = `${baseURL}/api/pages/1?populate=deep`;
+    const url = `${baseURL}/api/pages/${id}?populate=deep`;
 
     try {
         const response = await axios.get(url);
