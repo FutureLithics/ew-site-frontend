@@ -3,6 +3,8 @@ import Papa from 'papaparse';
 const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
+import { dataByState } from './dataParser.js';
+
 const config = {
     headers: { Authorization: `bearer ${token}` }
 };
@@ -46,7 +48,11 @@ const processDataSet = async (data) => {
 
     const csv = await fileParser(url);
 
-    return { success: true, data: csv}
+    const dataSet = {
+        stateData: dataByState(csv),
+    }
+
+    return { success: true, data: dataSet}
 }
 
 const fileParser = async (url) => {
