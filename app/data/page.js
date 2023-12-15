@@ -3,10 +3,7 @@ import { fetchDataSet } from '../utils/api';
 const Data = async () => {
 
     const data = await fetchDataSet();
-
-    console.log(data, 'data')
-
-    const stateData = data.data.stateData;
+    const stateData = data?.data?.stateData;
     
 
 	return (
@@ -22,7 +19,7 @@ const Data = async () => {
                         let coldKeys = keywords.cold_keywords;
                         let hotKeys = keywords.hot_keywords;
 
-                        let row = `${key}: count: ${count}; hi_temp: ${hiTemp}; low_temp: ${lowTemp}`;
+                        let row = `${key}: count: ${count}; hi_temp: ${Math.round(hiTemp*100)/100}; low_temp: ${Math.round(lowTemp*100)/100}`;
 
                         return (
                             <div className="my-2">
