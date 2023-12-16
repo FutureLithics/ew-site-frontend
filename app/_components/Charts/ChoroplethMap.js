@@ -32,10 +32,10 @@ const ChoroplethMap = ({data}) => {
 
     return (
         <div className="flex flex-col w-full">
-            <div className="w-full border-b-2 mb-4">
+            <div className="w-full border-b-2 mb-4 flex content-between justify-between">
                 <h4 className="font-bold text-lg mb-2">Show state incidence of {scheme.name}</h4>
                 <div className="flex content-center mb-2">
-                    <p className="me-2 align-middle">Please select a keyword:</p>
+                    <span className="me-2 align-middle">Please select a keyword:</span>
                     <select onChange={selectHandler} className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50">
                         {KEYWORDS.map( key => {
                             const val = key.name;
