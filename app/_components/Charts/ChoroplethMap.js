@@ -32,7 +32,7 @@ const ChoroplethMap = ({data}) => {
 
     return (
         <div className="flex flex-col w-full">
-            <div className="w-full border-b-2 mb-4 flex content-between justify-between">
+            <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
                 <h4 className="font-bold text-lg mb-2">Show state incidence of {scheme.name}</h4>
                 <div className="flex content-center mb-2">
                     <span className="me-2 align-middle">Please select a keyword:</span>
