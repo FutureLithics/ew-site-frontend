@@ -57,8 +57,8 @@ export const dataByState = (data) => {
 
             setValue(stateData[d.state_fips_code], 'avg_hi_temp', d.hi_5_seq_threshold);
             setValue(stateData[d.state_fips_code], 'avg_low_temp', d.c_5_seq_threshold);
-            setKeywords(stateData[d.state_fips_code]['keywords'], 'cold_keywords', d.c_5_seq_threshold_keyword);
-            setKeywords(stateData[d.state_fips_code]['keywords'], 'hot_keywords', d.hi_5_seq_threshold_keyword);
+            setKeywords(stateData[d.state_fips_code], 'keywords', d.c_5_seq_threshold_keyword);
+            setKeywords(stateData[d.state_fips_code], 'keywords', d.hi_5_seq_threshold_keyword);
  
         }
     })  
