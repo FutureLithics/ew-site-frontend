@@ -12,22 +12,35 @@ const KEYWORDS = [
     {name: 'humidity', color: 'hot'}
 ]
 
+const TEMPERATURES = [
+    {display: 'High Temperatures (Avg)', name: 'avg_hi_temp', color: 'hot'},
+    {display: 'Low Temperatures (Avg)', name: 'avg_low_temp', color: 'cold', scaleReversed: true},
+]
+
 const ChoroplethMap = ({data}) => {
     const mapData = new Map();
     const ref = useRef();
-    const [scheme, setScheme] = useState(KEYWORDS[0]);
+    const [scheme, setScheme] = useState(TEMPERATURES[0]);
 
     const selectHandler = (e) => {
         const val = e.target.value;
-        const index = KEYWORDS.findIndex((key) => key.name == val);
+        const index = TEMPERATURES.findIndex((key) => key.name == val);
 
-        setScheme(KEYWORDS[index])
+        setScheme(TEMPERATURES[index])
     }
 
-    useEffect(() => {
-        Object.keys(data).map((key) => mapData.set(key, data[key]['keywords'][scheme.name]));
+    console.log(data);
 
-        new Choropleth("#choropleth", mapData, { color: scheme.color, containerRef: ref });
+    useEffect(() => {
+        Object.keys(data).map((key) => mapData.set(key, data[key][scheme.name]));
+
+        const options = { 
+            color: scheme.color, 
+            containerRef: ref, 
+            scaleReversed: scheme.scaleReversed
+        };
+
+        new Choropleth("#choropleth", mapData, options);
     }, [data, scheme])
 
     return (
@@ -37,9 +50,9 @@ const ChoroplethMap = ({data}) => {
                 <div className="flex content-center mb-2">
                     <span className="me-2 align-middle">Please select a keyword:</span>
                     <select onChange={selectHandler} className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50">
-                        {KEYWORDS.map( key => {
+                        {TEMPERATURES.map( key => {
                             const val = key.name;
-                            return <option value={val} key={val}>{val}</option>
+                            return <option value={val} key={val}>{key.display}</option>
                         })}
                     </select>                    
                 </div>
