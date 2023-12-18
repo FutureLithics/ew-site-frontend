@@ -39,20 +39,26 @@ const processPageContent = (data) => {
     if (content) {
         return { success: true, content }
     } else {
-        return {success: false, content: "There was an error parsing content."}
+        return { success: false, content: "There was an error parsing content." }
     }
 }
 
 const processDataSet = async (data) => {
-    const url = data.data.attributes.DataSet.DataSet.data.attributes.url;
+    const url = data.data?.attributes?.DataSet?.DataSet?.data?.attributes?.url;
 
-    const csv = await fileParser(url);
 
-    const dataSet = {
-        stateData: dataByState(csv),
+    try {
+        const csv = await fileParser(url);
+
+        const dataSet = {
+            stateData: dataByState(csv),
+        }
+
+        return { success: true, data: dataSet }        
+    } catch (err) {
+        return { success: false, error: err }
     }
 
-    return { success: true, data: dataSet}
 }
 
 const fileParser = async (url) => {

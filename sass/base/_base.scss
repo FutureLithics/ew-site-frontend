@@ -30,3 +30,21 @@ html {
         left: 0;
     }
 }
+
+.tooltip {
+    position: absolute;
+    padding: 0.25rem;
+    background-color: white;
+    border: 1px solid slategray;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+
+    &.hide {
+        display: none
+    }
+
+    &.show {
+        display: inline-block;
+    }
+
+}

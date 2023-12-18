@@ -22,8 +22,9 @@ export default class Choropleth {
     setColorScale(){
         const range = d3.extent(this.data.values());
         const colorScheme = colorSchemes[this.options.color];
+        const orientation = this.options.scaleReversed ? range.reverse() : range;
 
-        this.color = d3.scaleSequential(range, colorScheme);
+        this.color = d3.scaleSequential(orientation, colorScheme);
     }
 
     setGeoData(){
@@ -36,6 +37,7 @@ export default class Choropleth {
 
     initialSetup(){
         this.setSVG();
+        this.generateTooltip();
         this.draw();
     }
 
@@ -67,7 +69,9 @@ export default class Choropleth {
             .append("path")
             .attr('fill', d => this.coloringFxn(d))
             .attr('stroke', 'gray')
-            .attr("d", this.path);
+            .attr("d", this.path)
+            .on("mouseover", (d) => this.mouseover(d))
+            .on("mouseout", (d) => this.mouseout(d));
 
     }
 
@@ -78,6 +82,39 @@ export default class Choropleth {
             return this.color(this.data.get(d.id));
         } else {
             return 'lightgray';
+        }
+    }
+
+    generateTooltip(){
+        this.tooltip = this.container.append('div');
+
+        this.tooltip.attr('class', 'tooltip hide');
+
+        this.setTootlipHandlers();
+    }
+
+    setTootlipHandlers(){
+        this.mouseover = (d) => {
+            this.tooltip.attr('class', 'tooltip show');
+
+            d3.select(d.target)
+                .style("stroke", "black")
+
+            const coord = d3.pointer(d);
+            const dataTarget = Number(this.data.get(d.target.__data__.id));
+
+            const value = dataTarget ? Math.round(dataTarget * 100) / 100 : "No data available" 
+
+            this.tooltip.html("Value: " + value)
+                .style("left", (coord[0] - 70) + "px")
+                .style("top", (coord[1] - 70) + "px")
+        }
+
+        this.mouseout = (d) => {
+            this.tooltip.attr('class', 'tooltip hide');
+
+            d3.select(d.target)
+                .style("stroke", "none");
         }
     }
 
