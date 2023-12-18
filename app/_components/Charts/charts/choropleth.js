@@ -106,15 +106,15 @@ export default class Choropleth {
             const value = dataTarget ? Math.round(dataTarget * 100) / 100 : "No data available" 
 
             this.tooltip.html("Value: " + value)
-                .style("left", (coord[0] - 70) + "px")
-                .style("top", (coord[1] - 70) + "px")
+                .style("left", (d.pageX) + "px")
+                .style("top", (d.pageY - 170) + "px")
         }
 
         this.mouseout = (d) => {
             this.tooltip.attr('class', 'tooltip hide');
 
             d3.select(d.target)
-                .style("stroke", "none");
+                .style("stroke", "gray");
         }
     }
 
