@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
-import topoMap from '../datasets/counties-albers-10m.json';
+import topoMap from '../datasets/places-us-topo-albers.json';
 
 const colorSchemes = {
     'cold': d3.interpolateBlues,
@@ -20,7 +20,7 @@ export default class Choropleth {
     }
 
     setColorScale(){
-        const range = d3.extent(this.data.values());
+        const range = d3.extent(this.data.values(), d => d.temp);
         const colorScheme = colorSchemes[this.options.color];
         const orientation = this.options.scaleReversed ? range.reverse() : range;
 
@@ -29,10 +29,10 @@ export default class Choropleth {
 
     setGeoData(){
         this.featureIds = Object.keys(this.data);
-        this.counties = topojson.feature(this.usMap, this.usMap.objects.counties)
-        this.states = topojson.feature(this.usMap, this.usMap.objects.states)
-        this.statemap = new Map(this.states.features.map(d => [d.id, d]))
-        this.statemesh = topojson.mesh(this.usMap, this.usMap.objects.states, (a, b) => a !== b)
+        this.places = topojson.feature(this.usMap, this.usMap.objects.places_us_albers)
+        //this.states = topojson.feature(stateMap, stateMap.objects.states)
+        // this.statemap = new Map(this.places.features.map(d => [d.id, d]))
+        // this.statemesh = topojson.mesh(this.usMap, this.usMap.objects.states, (a, b) => a !== b)
     }
 
     initialSetup(){
@@ -46,30 +46,33 @@ export default class Choropleth {
         this.container.selectAll("*").remove();
         this.svg = this.container.append("svg")
         this.svg.attr('viewBox', "0 0 960 600");
-        this.svg.attr("preserveAspectRatio", "xMinYMin meet")
+        this.svg.attr("preserveAspectRatio", "xMinYMin meet");
+
+        this.width = this.svg.attr('width')
+        this.height = this.svg.attr('height')
     }
 
     draw(){
-        this.path = d3.geoPath(); 
+        this.projection = d3.geoAlbersUsa().fitSize([960, 600], this.places);
+        this.path = d3.geoPath().projection(this.projection); 
+
+        this.statePath = d3.geoPath();
         
         this.g = this.svg.append('g');
         this.width = this.options.containerRef.current.offsetWidth;
 
-        console.log(this.width)
-
-        this.g.attr("transform", `translate(${this.width / 10}, 0)scale(0.8)`);
+        this.g.attr("transform", `translate(0, 0)scale(0.9)`);
 
         this.entityLines = this.g.append("g")
-        this.mesh = this.g.append("g")
 
         this.entityLines.attr("class", "counties")
             .selectAll("path")
-            .data(this.states.features)
+            .data(this.places.features)
             .enter()
             .append("path")
-            .attr('fill', d => this.coloringFxn(d))
-            .attr('stroke', 'gray')
             .attr("d", this.path)
+            .attr('fill',"none")
+            .attr('stroke', (d) => this.coloringFxn(d))
             .on("mouseover", (d) => this.mouseover(d))
             .on("mouseout", (d) => this.mouseout(d));
 
@@ -78,10 +81,10 @@ export default class Choropleth {
     coloringFxn(d){
         const value = this.data.get(d.id);
 
-        if(value){
-            return this.color(this.data.get(d.id));
+        if(value?.temp){
+            return this.color(value.temp);
         } else {
-            return 'lightgray';
+            return 'white';
         }
     }
 
@@ -97,24 +100,19 @@ export default class Choropleth {
         this.mouseover = (d) => {
             this.tooltip.attr('class', 'tooltip show');
 
-            d3.select(d.target)
-                .style("stroke", "black")
-
-            const coord = d3.pointer(d);
-            const dataTarget = Number(this.data.get(d.target.__data__.id));
+            const vals = this.data.get(d.target.__data__.id);
+            const dataTarget = vals?.temp;
+            const placeName = d.target.__data__?.properties?.name;
 
             const value = dataTarget ? Math.round(dataTarget * 100) / 100 : "No data available" 
 
-            this.tooltip.html("Value: " + value)
+            this.tooltip.html(`<div><p>Name: ${placeName}</p><p>Value: ${value}</p><p> Keyword: ${vals?.keyword}</p></div>`)
                 .style("left", (d.pageX) + "px")
                 .style("top", (d.pageY - 170) + "px")
         }
 
         this.mouseout = (d) => {
             this.tooltip.attr('class', 'tooltip hide');
-
-            d3.select(d.target)
-                .style("stroke", "gray");
         }
     }
 

@@ -13,8 +13,8 @@ const KEYWORDS = [
 ]
 
 const TEMPERATURES = [
-    {display: 'High Temperatures (Avg)', name: 'avg_hi_temp', color: 'hot'},
-    {display: 'Low Temperatures (Avg)', name: 'avg_low_temp', color: 'cold', scaleReversed: true},
+    {display: 'High Temperatures (Avg)', name: 'hi_temp', color: 'hot'},
+    {display: 'Low Temperatures (Avg)', name: 'low_temp', color: 'cold', scaleReversed: true},
 ]
 
 const ChoroplethMap = ({data}) => {
@@ -28,8 +28,6 @@ const ChoroplethMap = ({data}) => {
 
         setScheme(TEMPERATURES[index])
     }
-
-    console.log(data);
 
     useEffect(() => {
         Object.keys(data).map((key) => mapData.set(key, data[key][scheme.name]));
