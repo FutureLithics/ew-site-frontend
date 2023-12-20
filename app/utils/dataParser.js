@@ -55,8 +55,8 @@ export const dataByState = (data) => {
                 stateData[d.state_fips_code]['count'] += 1;
             }
 
-            setValue(stateData[d.state_fips_code], 'avg_hi_temp', d.hi_5_seq_threshold);
-            setValue(stateData[d.state_fips_code], 'avg_low_temp', d.c_5_seq_threshold);
+            setValue(stateData[d.state_fips_code], 'hi_temp', d.hi_5_seq_threshold);
+            setValue(stateData[d.state_fips_code], 'low_temp', d.c_5_seq_threshold);
             setKeywords(stateData[d.state_fips_code], 'keywords', d.c_5_seq_threshold_keyword);
             setKeywords(stateData[d.state_fips_code], 'keywords', d.hi_5_seq_threshold_keyword);
  
@@ -64,4 +64,40 @@ export const dataByState = (data) => {
     })  
     
     return stateData;
+}
+
+export const dataByPlace = (data) => {
+    const placeData = {};
+
+    data.map((d) => {
+        const numKeys = ['c_5_seq_threshold', 'hi_5_seq_threshold'];
+        const coldKeys = ['c_5_seq_threshold', 'c_5_seq_threshold_keyword'];
+        const hotKeys = ['hi_5_seq_threshold', 'hi_5_seq_threshold_keyword'];
+
+        const object = {};
+        object['hi_temp'] = {};
+        object['low_temp'] = {};
+        
+        Object.keys(d).map((key) => {
+            let val;
+
+            if (numKeys.includes(key)) {
+                val = d[key] ? Number(d[key]) : undefined;
+            } else {
+                val = d[key];
+            }
+
+            if (coldKeys.includes(key)) {
+                numKeys.includes(key) ? object['low_temp']['temp'] = val : object['low_temp']['keyword'] = val;
+            } else if (hotKeys.includes(key)) {
+                numKeys.includes(key) ? object['hi_temp']['temp'] = val : object['hi_temp']['keyword'] = val;              
+            } else {
+                object[key] = val;
+            }
+        })
+
+        placeData[d.place_fips_code] = object;
+    });
+
+    return placeData;
 }
