@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
-import topoMap from '../datasets/places-us-topo-albers.json';
 
 const colorSchemes = {
     'cold': d3.interpolateBlues,
@@ -12,7 +11,7 @@ export default class Choropleth {
         this.elementId = id;
         this.data = data;
         this.options = options;
-        this.usMap = topoMap;
+        this.usMap = options.topoData;
 
         this.setColorScale();
         this.setGeoData();
@@ -76,6 +75,8 @@ export default class Choropleth {
             .on("mouseover", (d) => this.mouseover(d))
             .on("mouseout", (d) => this.mouseout(d));
 
+        this.setZoom();
+
     }
 
     coloringFxn(d){
@@ -114,6 +115,17 @@ export default class Choropleth {
         this.mouseout = (d) => {
             this.tooltip.attr('class', 'tooltip hide');
         }
+    }
+
+    setZoom(){
+        let transform;
+
+        const zoom = d3.zoom().on("zoom", e => {
+          this.g.attr("transform", (transform = e.transform));
+        });
+
+        this.svg.call(zoom)
+            .call(zoom.transform, d3.zoomIdentity);
     }
 
     
