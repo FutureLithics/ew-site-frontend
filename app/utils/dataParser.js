@@ -77,9 +77,12 @@ export const dataByPlace = (data) => {
         const object = {};
         object['hi_temp'] = {};
         object['low_temp'] = {};
+
+        var fips;
         
         Object.keys(d).map((key) => {
             let val;
+            fips = String(d.place_fips_code).padStart(5, '0');
 
             if (numKeys.includes(key)) {
                 val = d[key] ? Number(d[key]) : undefined;
@@ -96,7 +99,7 @@ export const dataByPlace = (data) => {
             }
         })
 
-        placeData[d.place_fips_code] = object;
+        placeData[fips] = object;
     });
 
     return placeData;

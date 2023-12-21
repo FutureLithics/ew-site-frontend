@@ -1,24 +1,36 @@
-import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/solid';
+import { PhoneIcon, EnvelopeIcon, MapPinIcon, DocumentArrowDownIcon } from '@heroicons/react/24/solid';
 import ReactMarkdown from 'react-markdown';
 
 // add support for underline text from the Rich Text Formatter
 import rehypeRaw from "rehype-raw";
 
 const ContactListItems = ({sections}) => {
+
 	return (
 		<div className="self-center">
 			{sections.map( (section) => {
 				const Icon = section.Icon;
-
-				return (
-					<li key={section.key} className="flex">
-						<div className="flex pe-2">
-							<Icon className="w-4 h-4 self-center"/>
-						</div>
-						<div>{section.text}</div>
-					</li>					
-				)
-
+                if (section.key == 'cv-resume'){
+                    return (
+                        <li key={section.key} className="flex">
+                            <div className="flex pe-2">
+                                <Icon className="w-4 h-4 self-center"/>
+                            </div>
+                            <a href={section.text} className='text-amber-500'>
+                                CV/Resume
+                            </a>
+                        </li>					
+                    ) 
+                } else {
+                    return (
+                        <li key={section.key} className="flex">
+                            <div className="flex pe-2">
+                                <Icon className="w-4 h-4 self-center"/>
+                            </div>
+                            <div>{section.text}</div>
+                        </li>					
+                    )                    
+                }
 			} )}
 		</div>
 	);
@@ -35,13 +47,14 @@ const MainContentSection = ({content}) => {
 }
 
 const FrontPageWidget = ({ content }) => {
-	const { MainIntroClassic, Photo, Header } = content;
+	const { MainIntroClassic, Photo, Header, CvResume } = content;
 	const photoAtt = Photo?.data?.attributes;
 
 	const contactSections = [
 		{key: 'email', Icon: EnvelopeIcon, text: content.Email},
 		{key: 'phone', Icon: PhoneIcon, text: content.Phone},
-		{key: 'location', Icon: MapPinIcon, text: content.Location}
+		{key: 'location', Icon: MapPinIcon, text: content.Location},
+        {key: 'cv-resume', Icon: DocumentArrowDownIcon, text: CvResume?.data?.attributes?.url}
 	]
 
 	return (
