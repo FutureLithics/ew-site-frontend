@@ -8,7 +8,7 @@ const Navigation = ({navElements}) => {
         <nav className="hidden md:block">
             <ul className="h-full flex content-center">
                 {navElements.map( el => {
-                    return <NavLink el={el}  pathname={pathname}/>
+                    return <NavLink el={el} key={el.link} pathname={pathname}/>
                 })}
             </ul>
         </nav>

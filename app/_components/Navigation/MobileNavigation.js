@@ -34,7 +34,7 @@ const MobileNavigation = ({ navElements }) => {
             </button>
             <ul className={`top-level absolute top-16 ${toggle ? 'flex' : 'hidden'} flex-col w-screen h-screen content-center z-50 sm:px-36`}>
                 {navElements.map( el => {
-                    return <NavLink el={el}  pathname={pathname} mobile={true} close={close}/>
+                    return <NavLink el={el} key={el.link} pathname={pathname} mobile={true} close={close}/>
                 })}
             </ul>
         </nav>
