@@ -1,5 +1,5 @@
-import { fetchDataSet } from '../utils/api';
-import ChoroplethMap from '../_components/Charts/ChoroplethMap';
+import { fetchDataSet } from '../../utils/api';
+import ChoroplethMap from '../../_components/Charts/ChoroplethMap';
 
 const Data = async () => {
 

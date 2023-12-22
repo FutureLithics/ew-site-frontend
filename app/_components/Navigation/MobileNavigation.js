@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Link from 'next/link';
+import { NavLink } from './NavItems';
 import { usePathname } from "next/navigation";
 
 const Hamburger = ({toggle}) => {
@@ -23,23 +23,18 @@ const MobileNavigation = ({ navElements }) => {
     const pathname = usePathname();
     const [ toggle, setToggle ] = useState(false);
 
+    const close = () => {
+        setToggle(false);
+    }
+
     return (
         <nav className="relative flex flex-wrap md:hidden grow content-center justify-end mobile-navigation">
             <button onClick={() => setToggle(!toggle)}>
                 <Hamburger toggle={toggle} />
             </button>
-            <ul className={`absolute top-16 ${toggle ? 'flex' : 'hidden'} flex-col w-screen h-screen content-center z-50`}>
+            <ul className={`top-level absolute top-16 ${toggle ? 'flex' : 'hidden'} flex-col w-screen h-screen content-center z-50 sm:px-36`}>
                 {navElements.map( el => {
-                    const active = el.link == pathname ? 'active' : '';
-                    const linkClasses = `${active} self-center mx-2 sm:mx-4 py-2 text-lg font-bold`;
-
-                    return (
-                        <li key={el.name} className="flex">
-                            <Link href={el.link} className={linkClasses}>
-                                {el.name}
-                            </Link>
-                        </li>
-                    );
+                    return <NavLink el={el}  pathname={pathname} mobile={true} close={close}/>
                 })}
             </ul>
         </nav>

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { NavLink } from "./NavItems";
 import { usePathname } from "next/navigation";
 
 const Navigation = ({navElements}) => {
@@ -8,16 +8,7 @@ const Navigation = ({navElements}) => {
         <nav className="hidden md:block">
             <ul className="h-full flex content-center">
                 {navElements.map( el => {
-                    const active = el.link == pathname ? 'active' : '';
-                    const linkClasses = `${active} self-center mx-1 sm:mx-4 text-lg font-bold`;
-
-                    return (
-                        <li key={el.name} className="flex">
-                            <Link href={el.link} className={linkClasses}>
-                                {el.name}
-                            </Link>
-                        </li>
-                    );
+                    return <NavLink el={el}  pathname={pathname}/>
                 })}
             </ul>
         </nav>

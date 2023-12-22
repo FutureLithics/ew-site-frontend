@@ -12,7 +12,9 @@
 
     ul {
         background-color: white;
-        right: -1.25rem;
+        &.top-level{
+            right: -1.25rem;
+        }     
     }
 }
 
@@ -25,9 +27,26 @@ nav {
                     color: grey;
                 }
 
-                &.active {
-                    border-bottom: 1px solid grey;
+                &.active:not(.sub-menu-item) {
+                    border-bottom: 1px solid lightgray;                       
                 }
+
+                &.sub-menu-item.active {
+                    color: darkslateblue;
+
+                    &:hover {
+                        transition: all 100ms ease-in-out;
+                        color: grey;
+                    }
+                }
+            }
+        }
+
+        &.sub-menu {
+            background-color: whitesmoke;
+
+            &.absolute {
+                border-radius: 5%;
             }
         }
     }
