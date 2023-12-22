@@ -5,7 +5,6 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 const determineSubMenuActive = (subMenuItem, subMenu, pathname) => {
     if (!subMenuItem && subMenu) {
         return subMenu.filter((item) => {
-            console.log(item.link, pathname)
             return item.link === pathname;
         }).length > 0;
     } else {
