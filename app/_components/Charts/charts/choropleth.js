@@ -26,10 +26,18 @@ export default class Choropleth {
         this.color = d3.scaleSequential(orientation, colorScheme);
     }
 
+    setTopoJSON(){
+        if (this.options.level.name == 'places') {
+            return topojson.feature(this.usMap, this.usMap.objects.places_us_albers)
+        } else {
+            return topojson.feature(this.usMap, this.usMap.objects.counties)
+        }
+    }
+
     setGeoData(){
         this.featureIds = Object.keys(this.data);
-        this.places = topojson.feature(this.usMap, this.usMap.objects.places_us_albers)
-        //this.states = topojson.feature(stateMap, stateMap.objects.states)
+        this.places = this.setTopoJSON();
+        // this.states = topojson.feature(stateMap, stateMap.objects.states)
         // this.statemap = new Map(this.places.features.map(d => [d.id, d]))
         // this.statemesh = topojson.mesh(this.usMap, this.usMap.objects.states, (a, b) => a !== b)
     }
@@ -51,9 +59,43 @@ export default class Choropleth {
         this.height = this.svg.attr('height')
     }
 
+    setPathFeature(){
+        if (this.options.level.name == 'places') {
+            this.projection = d3.geoAlbersUsa().fitSize([960, 600], this.places);
+            this.path = d3.geoPath().projection(this.projection);        
+        } else {
+            this.path = d3.geoPath(); 
+        }
+    }
+
+    setPlacesEntityLines(){
+        this.entityLines.attr("class", "places")
+            .selectAll("path")
+            .data(this.places.features)
+            .enter()
+            .append("path")
+            .attr("d", this.path)
+            .attr('fill',"none")
+            .attr('stroke', (d) => this.coloringFxn(d))
+            .on("mouseover", (d) => this.mouseover(d))
+            .on("mouseout", (d) => this.mouseout(d));
+    }
+
+    setCountyEntityLines(){
+        this.entityLines.attr("class", "counties")
+            .selectAll("path")
+            .data(this.places.features)
+            .enter()
+            .append("path")
+            .attr("d", this.path)
+            .attr('fill', (d) => this.coloringFxn(d))
+            .attr('stroke', "gray")
+            .on("mouseover", (d) => this.mouseover(d))
+            .on("mouseout", (d) => this.mouseout(d));
+    }
+
     draw(){
-        this.projection = d3.geoAlbersUsa().fitSize([960, 600], this.places);
-        this.path = d3.geoPath().projection(this.projection); 
+        this.setPathFeature(); 
 
         this.statePath = d3.geoPath();
         
@@ -64,16 +106,11 @@ export default class Choropleth {
 
         this.entityLines = this.g.append("g")
 
-        this.entityLines.attr("class", "counties")
-            .selectAll("path")
-            .data(this.places.features)
-            .enter()
-            .append("path")
-            .attr("d", this.path)
-            .attr('fill',"none")
-            .attr('stroke', (d) => this.coloringFxn(d))
-            .on("mouseover", (d) => this.mouseover(d))
-            .on("mouseout", (d) => this.mouseout(d));
+        if (this.options.level.name == 'places') {
+            this.setPlacesEntityLines();
+        } else {
+            this.setCountyEntityLines();
+        }
 
         this.setZoom();
 
@@ -97,6 +134,28 @@ export default class Choropleth {
         this.setTootlipHandlers();
     }
 
+    setHighestKeyword(keyword){
+        if (keyword == undefined) {
+            return 'Not Available';
+        }
+
+        if (this.options.level.name == 'places') {
+            return keyword;
+        } else {
+            let max;
+
+            Object.keys(keyword).map((key) => {
+                if (max == undefined) {
+                    max = key;
+                } else if(keyword[key] > keyword[max]){
+                    max = key;
+                }
+            });
+
+            return max;
+        }
+    }
+
     setTootlipHandlers(){
         this.mouseover = (d) => {
             this.tooltip.attr('class', 'tooltip show');
@@ -104,12 +163,13 @@ export default class Choropleth {
             const vals = this.data.get(d.target.__data__.id);
             const dataTarget = vals?.temp;
             const placeName = d.target.__data__?.properties?.name;
+            const keyword = this.setHighestKeyword(vals?.keyword);
 
             const value = dataTarget ? Math.round(dataTarget * 100) / 100 : "No data available" 
 
-            this.tooltip.html(`<div><p>Name: ${placeName}</p><p>Value: ${value}</p><p> Keyword: ${vals?.keyword}</p></div>`)
-                .style("left", (d.pageX) + "px")
-                .style("top", (d.pageY - 170) + "px")
+            this.tooltip.html(`<div><p>Name: ${placeName}</p><p>Value: ${value}</p><p> Keyword: ${keyword}</p></div>`)
+                .style("left", (d.pageX - 50) + "px")
+                .style("top", (d.pageY - 200) + "px")
         }
 
         this.mouseout = (d) => {

@@ -36,7 +36,7 @@ const averager = (currentValue, number, count) => {
 
             return value;
         } else {
-            return number;
+            return Number(number);
         }        
     }
 }
@@ -68,12 +68,11 @@ export const dataByState = (data) => {
 
 export const dataByPlace = (data) => {
     const placeData = {};
+    const numKeys = ['c_5_seq_threshold', 'hi_5_seq_threshold'];
+    const coldKeys = ['c_5_seq_threshold', 'c_5_seq_threshold_keyword'];
+    const hotKeys = ['hi_5_seq_threshold', 'hi_5_seq_threshold_keyword'];    
 
     data.map((d) => {
-        const numKeys = ['c_5_seq_threshold', 'hi_5_seq_threshold'];
-        const coldKeys = ['c_5_seq_threshold', 'c_5_seq_threshold_keyword'];
-        const hotKeys = ['hi_5_seq_threshold', 'hi_5_seq_threshold_keyword'];
-
         const object = {};
         object['hi_temp'] = {};
         object['low_temp'] = {};
@@ -103,4 +102,29 @@ export const dataByPlace = (data) => {
     });
 
     return placeData;
+}
+
+export const dataByCounty = (data) => {
+    const countyData = {};
+        
+    data.map((d) => {    // if this key does not yet exist, no need to run averager
+        if (d.state_fips_code && d.county_fips_code){
+            const code = String(d.state_fips_code) + String(d.county_fips_code)
+            if(!Object.keys(countyData).includes(code)){
+                countyData[code] = {};
+                countyData[code]['hi_temp'] = {};
+                countyData[code]['low_temp'] = {};
+                countyData[code]['hi_temp']['count'] = 1;
+                countyData[code]['low_temp']['count'] = 1;
+            }
+
+            setValue(countyData[code]['hi_temp'], 'temp', d.hi_5_seq_threshold);
+            setValue(countyData[code]['low_temp'], 'temp', d.c_5_seq_threshold);
+            setKeywords(countyData[code]['low_temp'], 'keyword', d.c_5_seq_threshold_keyword);
+            setKeywords(countyData[code]['hi_temp'], 'keyword', d.hi_5_seq_threshold_keyword);
+ 
+        }
+    })  
+    
+    return countyData;
 }
