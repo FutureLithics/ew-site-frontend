@@ -3,7 +3,7 @@ import Papa from 'papaparse';
 const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
-import { dataByState, dataByPlace } from './dataParser.js';
+import { dataByState, dataByCounty, dataByPlace } from './dataParser.js';
 
 const config = {
     headers: { Authorization: `bearer ${token}` }
@@ -24,7 +24,7 @@ export const fetchPageData = async (id = 1) => {
 
 export const fetchDataSet = async (id = 1) => {
     const url = `${baseURL}/api/data-sets/${id}?populate=deep`;
-    console.log(config);
+
     try {
         const response = await axios.get(url, config);
 
@@ -52,6 +52,7 @@ const processDataSet = async (data) => {
 
         const dataSet = {
             stateData: dataByState(csv),
+            countyData: dataByCounty(csv),
             placeData: dataByPlace(csv)
         }
 

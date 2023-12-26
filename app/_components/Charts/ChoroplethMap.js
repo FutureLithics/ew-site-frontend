@@ -14,6 +14,11 @@ const KEYWORDS = [
     {name: 'humidity', color: 'hot'}
 ]
 
+const LEVELS = [
+    {display: 'County', name: 'county', topoPath: '/datasets/counties-albers-10m.json'},
+    {display: 'Place/Census', name: 'places', topoPath: '/datasets/places-us-topo-albers.json'},
+]
+
 const TEMPERATURES = [
     {display: 'High Temperatures (Avg)', name: 'hi_temp', color: 'hot'},
     {display: 'Low Temperatures (Avg)', name: 'low_temp', color: 'cold', scaleReversed: true},
@@ -21,31 +26,20 @@ const TEMPERATURES = [
 
 var topoData;
 
-const PopulatedMap = ({scheme, reference, selectHandler}) => {
+const PopulatedMap = ({reference}) => {
     return (
-        <div className="flex flex-col w-full">
-            <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
-                <h4 className="font-bold text-lg mb-2">Show place/city values for {scheme.name}</h4>
-                <div className="flex content-center mb-2">
-                    <span className="me-2 align-middle">Temperature average:</span>
-                    <select onChange={selectHandler} className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50">
-                        {TEMPERATURES.map( key => {
-                            const val = key.name;
-                            return <option value={val} key={val}>{key.display}</option>
-                        })}
-                    </select>                    
-                </div>
-
-            </div>
-            <div id="choropleth" ref={reference} className="svg-container flex content-center"></div>           
-        </div>
+         <div id="choropleth" ref={reference} className="svg-container flex content-center"></div>
     );
 }
 
 const ChoroplethMap = ({data}) => {
+    const { countyData, placeData } = data?.data;
+
     const mapData = new Map();
     const ref = useRef();
     const [scheme, setScheme] = useState(TEMPERATURES[0]);
+    const [level, setLevel] = useState(LEVELS[0]);
+    const [dataset, setDataset] = useState(countyData);
     const [loading, setLoading] = useState(true);
 
     const selectHandler = (e) => {
@@ -55,45 +49,86 @@ const ChoroplethMap = ({data}) => {
         setScheme(TEMPERATURES[index])
     }
 
+    const selectLevelHandler = (e) => {
+        const val = e.target.value;
+        const index = LEVELS.findIndex((key) => key.name == val);
+
+        if(LEVELS[index].name == 'county') {
+            setDataset(countyData);
+        } else if (LEVELS[index].name == 'places') {
+            setDataset(placeData);
+        }
+
+        setLevel(LEVELS[index])
+        setLoading(true);
+    }
+
     const renderMap = () => {
-        Object.keys(data).map((key) => mapData.set(key, data[key][scheme.name]));
+        Object.keys(dataset).map((key) => mapData.set(key, dataset[key][scheme.name]));
 
         const options = { 
             color: scheme.color, 
             containerRef: ref, 
             scaleReversed: scheme.scaleReversed,
-            topoData: topoData
+            topoData: topoData,
+            level
         };
 
         new Choropleth("#choropleth", mapData, options);
     }
 
+    const getTopoData = () => {
+        json(level.topoPath)
+            .then((data) => {
+                topoData = data;
+
+                setLoading(false);
+            });
+    }
+
     useEffect(() => {
         if(loading) {
-            json('/datasets/places-us-topo-albers.json')
-                .then((data) => {
-                    topoData = data;
-
-                    setLoading(false);
-                })
+            getTopoData();
         }
     }, [])
 
     useEffect(() => {
         if (!loading) {
             renderMap();
+        } else {
+            getTopoData();
         }
-    }, [loading, scheme])
+    }, [loading, scheme, level])
 
     return (
-        <>
+        <div className="flex flex-col w-full">
+            <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
+                <h5 className="font-bold text-md mb-2">Showing {scheme.display} by {level.display}</h5>
+                <div className="flex flex-col">
+                    <div className="flex justify-between mb-2">
+                        <span className="me-2 align-middle">Level:</span>
+                        <select onChange={selectLevelHandler} className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50">
+                            {LEVELS.map( key => {
+                                const val = key.name;
+                                return <option value={val} key={val}>{key.display}</option>
+                            })}
+                        </select>                    
+                    </div>
+                    <div className="flex justify-between mb-2">
+                        <span className="me-2 align-middle">Temperature average:</span>
+                        <select onChange={selectHandler} className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50">
+                            {TEMPERATURES.map( key => {
+                                const val = key.name;
+                                return <option value={val} key={val}>{key.display}</option>
+                            })}
+                        </select>                    
+                    </div>                    
+                </div>
+            </div>
         {
-            loading ? <Loader /> : <PopulatedMap 
-                                        scheme={scheme} 
-                                        reference={ref} 
-                                        selectHandler={selectHandler}/>
+            loading ? <Loader /> : <PopulatedMap reference={ref} />
         }
-        </>
+        </div>
 
     );
 }
