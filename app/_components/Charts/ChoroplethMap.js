@@ -125,9 +125,7 @@ const ChoroplethMap = ({data}) => {
                     </div>                    
                 </div>
             </div>
-        {
-            loading ? <Loader /> : <PopulatedMap reference={ref} />
-        }
+            { loading ? <Loader /> : <PopulatedMap reference={ref} /> }
         </div>
 
     );

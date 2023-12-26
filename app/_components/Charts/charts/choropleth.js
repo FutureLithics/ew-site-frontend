@@ -168,8 +168,8 @@ export default class Choropleth {
             const value = dataTarget ? Math.round(dataTarget * 100) / 100 : "No data available" 
 
             this.tooltip.html(`<div><p>Name: ${placeName}</p><p>Value: ${value}</p><p> Keyword: ${keyword}</p></div>`)
-                .style("left", (d.pageX) + "px")
-                .style("top", (d.pageY - 170) + "px")
+                .style("left", (d.pageX - 50) + "px")
+                .style("top", (d.pageY - 200) + "px")
         }
 
         this.mouseout = (d) => {
