@@ -13,6 +13,8 @@ export default class Choropleth {
         this.options = options;
         this.usMap = options.topoData;
 
+        console.log(data, "data!")
+
         this.setColorScale();
         this.setGeoData();
         this.initialSetup();
@@ -28,7 +30,7 @@ export default class Choropleth {
 
     setTopoJSON(){
         if (this.options.level.name == 'places') {
-            return topojson.feature(this.usMap, this.usMap.objects.places_us_albers)
+            return topojson.feature(this.usMap, this.usMap.objects.simple_geojson)
         } else {
             return topojson.feature(this.usMap, this.usMap.objects.counties)
         }
@@ -75,7 +77,7 @@ export default class Choropleth {
             .enter()
             .append("path")
             .attr("d", this.path)
-            .attr('fill',"none")
+            .attr('fill',(d) => this.coloringFxn(d))
             .attr('stroke', (d) => this.coloringFxn(d))
             .on("mouseover", (d) => this.mouseover(d))
             .on("mouseout", (d) => this.mouseout(d));

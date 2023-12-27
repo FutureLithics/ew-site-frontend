@@ -16,7 +16,7 @@ const KEYWORDS = [
 
 const LEVELS = [
     {display: 'County', name: 'county', topoPath: '/datasets/counties-albers-10m.json'},
-    {display: 'Place/Census', name: 'places', topoPath: '/datasets/places-us-topo-albers.json'},
+    {display: 'Place/Census', name: 'places', topoPath: '/datasets/places.json'},
 ]
 
 const TEMPERATURES = [
