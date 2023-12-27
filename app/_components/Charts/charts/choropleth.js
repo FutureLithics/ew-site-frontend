@@ -13,8 +13,6 @@ export default class Choropleth {
         this.options = options;
         this.usMap = options.topoData;
 
-        console.log(data, "data!")
-
         this.setColorScale();
         this.setGeoData();
         this.initialSetup();
@@ -39,9 +37,9 @@ export default class Choropleth {
     setGeoData(){
         this.featureIds = Object.keys(this.data);
         this.places = this.setTopoJSON();
-        // this.states = topojson.feature(stateMap, stateMap.objects.states)
-        // this.statemap = new Map(this.places.features.map(d => [d.id, d]))
-        // this.statemesh = topojson.mesh(this.usMap, this.usMap.objects.states, (a, b) => a !== b)
+        if (this.options.level.name == 'places') {
+            this.placemesh = topojson.mesh(this.usMap, this.usMap.objects.simple_geojson, (a, b) => a !== b)
+        }
     }
 
     initialSetup(){
@@ -98,9 +96,6 @@ export default class Choropleth {
 
     draw(){
         this.setPathFeature(); 
-
-        this.statePath = d3.geoPath();
-        
         this.g = this.svg.append('g');
         this.width = this.options.containerRef.current.offsetWidth;
 
