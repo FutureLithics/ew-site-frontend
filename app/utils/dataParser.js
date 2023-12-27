@@ -81,7 +81,7 @@ export const dataByPlace = (data) => {
         
         Object.keys(d).map((key) => {
             let val;
-            fips = String(d.place_fips_code).padStart(5, '0');
+            fips = String(d.state_fips_code) + String(d.place_fips_code);
 
             if (numKeys.includes(key)) {
                 val = d[key] ? Number(d[key]) : undefined;
