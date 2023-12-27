@@ -48,6 +48,19 @@ export default class Choropleth {
         this.draw();
     }
 
+    setFullScreen(){
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const parent = d3.select(".svg-container");
+
+        this.svg.attr('height', `${width}px`);
+        this.svg.attr('width',  `${height}px`);
+        this.svg.attr('transform', `translate(-${width / 2}, ${height / 3})rotate(90)`)
+
+        this.svg.attr('class', 'full-screen-svg');
+    }
+
     setSVG(){
         this.container = d3.select(this.elementId);
         this.container.selectAll("*").remove();
@@ -98,6 +111,9 @@ export default class Choropleth {
         this.setPathFeature(); 
         this.g = this.svg.append('g');
         this.width = this.options.containerRef.current.offsetWidth;
+
+        
+        this.options.fullScreen && this.setFullScreen();
 
         this.g.attr("transform", `translate(0, 0)scale(0.9)`);
 
