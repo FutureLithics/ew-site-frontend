@@ -16,6 +16,14 @@ html {
     }
 }
 
+.btn {
+    @apply font-bold py-2 px-4 rounded;
+}
+
+.full-screen-button {
+    @apply bg-amber-500 hover:bg-amber-600 ;
+}
+
 .fs-button{
     position: absolute;
     background-color: rgba(255, 255, 255, 0.5);
@@ -25,8 +33,9 @@ html {
     padding: 0.25rem;
     height: 40px;
     width: 40px;
-    bottom: 1rem;
+    bottom: 2rem;
     right: 2rem;
+    opacity: 0.75;
     z-index: 100001;
 }
 
@@ -36,7 +45,7 @@ html {
     height: 90vh;
     vertical-align: top;
     border-radius: 2%;
-    background-color: rgba(112, 128, 144, 0.25);
+    background-color: rgba(112, 128, 144, 0.5);
     overflow: hidden;
 
     @media screen and (max-width: 56em) {
@@ -59,6 +68,8 @@ html {
     svg {
         display: inline-block;
         position: absolute;
+        transform-box: fill-box;
+        transform-origin: center;
         top: 0;
         left: 0;
     }

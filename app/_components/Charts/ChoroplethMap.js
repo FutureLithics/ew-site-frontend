@@ -28,19 +28,27 @@ var topoData;
 
 const PopulatedMap = ({reference, fullScreen, fullScreenToggle}) => {
     const full = fullScreen ? "full-screen-svg-container" : "";
-    const displayButton = fullScreen ? "flex content-center justify-center" : "none";
+    const displayButton = fullScreen ? "flex content-center justify-center" : "hidden";
+    const removeButtonArea = fullScreen ? "hidden" : "sm:hidden";
 
     return (
         <>
             <div className={`fs-button ${displayButton}`}>
                 <button
-                    className={`text-4xl text-white`} 
+                    className={`text-3xl text-white`} 
                     onClick={() => fullScreenToggle()}>
-                        X
+                        x
                 </button>
             </div>
             
-            <div id="choropleth" ref={reference} className={`svg-container flex content-center ${full}`}></div>        
+            <div id="choropleth" ref={reference} className={`svg-container flex content-center ${full}`}></div>    
+            <div className={`${removeButtonArea} w-full p-4 text-center`}>
+                <button 
+                    onClick={() => fullScreenToggle()}
+                    className="full-screen-button btn mx-auto my-1 sm:hidden">
+                    Enter fullscreen
+                </button>
+            </div>    
         </>
 
     );
@@ -131,11 +139,6 @@ const ChoroplethMap = ({data}) => {
             <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
                 <div className="flex flex-col">
                     <h5 className="font-bold text-md mb-2">Showing {scheme.display} by {level.display}</h5>
-                    <button 
-                        onClick={() => fullScreenToggle()}
-                        className="btn btn-primary inline-block">
-                        Enter fullscreen
-                    </button>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-2">
