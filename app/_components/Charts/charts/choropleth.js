@@ -174,7 +174,8 @@ export default class Choropleth {
 
     setTootlipHandlers(){
         this.mouseover = (d) => {
-            this.tooltip.attr('class', 'tooltip show');
+            const classes = this.options.fullScreen ? "tooltip full-screen-tt show" : 'tooltip show';
+            this.tooltip.attr('class', classes);
 
             const vals = this.data.get(d.target.__data__.id);
             const dataTarget = vals?.temp;

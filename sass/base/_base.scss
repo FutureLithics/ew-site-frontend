@@ -91,4 +91,10 @@ html {
         display: inline-block;
     }
 
+    &.full-screen-tt {
+        transform: rotate(90deg);
+        transform-origin: center;
+        transform-box: fill-box;
+    }
+
 }
