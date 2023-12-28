@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'base/mixins';
-@import 'base/base';
-@import 'base/typography';
+@import "base/mixins";
+@import "base/base";
+@import "base/typography";
 
-@import 'components/header';
-@import 'components/rich-text';
+@import "components/header";
+@import "components/rich-text";
