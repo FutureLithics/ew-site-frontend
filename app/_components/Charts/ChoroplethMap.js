@@ -26,9 +26,31 @@ const TEMPERATURES = [
 
 var topoData;
 
-const PopulatedMap = ({reference}) => {
+const PopulatedMap = ({reference, fullScreen, fullScreenToggle}) => {
+    const full = fullScreen ? "full-screen-svg-container" : "";
+    const displayButton = fullScreen ? "flex content-center justify-center" : "hidden";
+    const removeButtonArea = fullScreen ? "hidden" : "sm:hidden";
+
     return (
-         <div id="choropleth" ref={reference} className="svg-container flex content-center"></div>
+        <>
+            <div className={`fs-button ${displayButton}`}>
+                <button
+                    className={`text-3xl text-white`} 
+                    onClick={() => fullScreenToggle()}>
+                        x
+                </button>
+            </div>
+            
+            <div id="choropleth" ref={reference} className={`svg-container flex content-center ${full}`}></div>    
+            <div className={`${removeButtonArea} w-full p-4 text-center`}>
+                <button 
+                    onClick={() => fullScreenToggle()}
+                    className="full-screen-button btn mx-auto my-1 sm:hidden">
+                    Enter fullscreen
+                </button>
+            </div>    
+        </>
+
     );
 }
 
@@ -41,6 +63,11 @@ const ChoroplethMap = ({data}) => {
     const [level, setLevel] = useState(LEVELS[0]);
     const [dataset, setDataset] = useState(countyData);
     const [loading, setLoading] = useState(true);
+    const [fullScreen, setFullScreen] = useState(false);
+
+    const fullScreenToggle = () => {
+        setFullScreen(!fullScreen);
+    } 
 
     const selectHandler = (e) => {
         const val = e.target.value;
@@ -71,7 +98,8 @@ const ChoroplethMap = ({data}) => {
             containerRef: ref, 
             scaleReversed: scheme.scaleReversed,
             topoData: topoData,
-            level
+            level,
+            fullScreen
         };
 
         new Choropleth("#choropleth", mapData, options);
@@ -100,10 +128,18 @@ const ChoroplethMap = ({data}) => {
         }
     }, [loading, scheme, level])
 
+    useEffect(() => {
+        if(!loading && dataset != undefined){
+            renderMap();            
+        }
+    }, [fullScreen]);
+
     return (
         <div className="flex flex-col w-full">
             <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
-                <h5 className="font-bold text-md mb-2">Showing {scheme.display} by {level.display}</h5>
+                <div className="flex flex-col">
+                    <h5 className="font-bold text-md mb-2">Showing {scheme.display} by {level.display}</h5>
+                </div>
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-2">
                         <span className="me-2 align-middle">Level:</span>
@@ -125,7 +161,7 @@ const ChoroplethMap = ({data}) => {
                     </div>                    
                 </div>
             </div>
-            { loading ? <Loader /> : <PopulatedMap reference={ref} /> }
+            { loading ? <Loader /> : <PopulatedMap reference={ref} fullScreen={fullScreen} fullScreenToggle={fullScreenToggle} /> }
         </div>
 
     );
