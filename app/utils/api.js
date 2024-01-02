@@ -3,7 +3,7 @@ import Papa from "papaparse";
 const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
-import { dataByState, dataByCounty, dataByPlace } from "./dataParser.js";
+import { dataByState, dataByCounty, dataByPlace, processFragilityData } from "./dataParser.js";
 
 const config = {
     headers: { Authorization: `bearer ${token}` },
@@ -55,19 +55,21 @@ const processDataSet = async (data, type = 'climate') => {
 
 
         if(type == 'fragility'){
-            csv.slice(0, 10).map((d) => {
-                console.log(d);
-            })
+            const data = processFragilityData(csv);
+
+            return { success: true, data };
         } else {
             const dataSet = {
                 stateData: dataByState(csv),
                 countyData: dataByCounty(csv),
                 placeData: dataByPlace(csv),
-            };            
+            };  
+            
+            return { success: true, data: dataSet };
         }
 
 
-        return { success: true, data: dataSet };
+        // return { success: true, data: dataSet };
     } catch (err) {
         return { success: false, error: err };
     }
