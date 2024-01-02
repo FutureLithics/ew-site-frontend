@@ -39,15 +39,14 @@ const FragilityContainer = ({data}) => {
     }, [data]);
 
     useEffect(() => {
-        const natlData = data?.natlData;
-        const countyData = data?.countyData;
+        if(data) {
+            const natlData = data?.natlData;
+            const countyData = data?.countyData;
 
-        setDataSlice(countyData[keys[sliderPos]]);
-        setNatlDataset(natlData[year])
+            setDataSlice(countyData[keys[sliderPos]]);
+            setNatlDataset(natlData[year])            
+        }
     }, [sliderPos]);
-
-
-    console.log(natlDataset, dataSlice, sliderPos, 'sliderPos!')
 
     return (
         <div className="w-full">

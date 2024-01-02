@@ -1,9 +1,7 @@
 import { Suspense } from "react";
-import { fetchFragilityDataSet } from "../../utils/api";
 import FragilityContext from './FragilityContext';
 import "rsuite/dist/rsuite-no-reset.min.css";
 import Loader from "@/app/_components/Loader";
-import ChoroplethMap from "../../_components/Charts/ChoroplethMap";
 
 const Fragility = async () => {
 
@@ -15,5 +13,7 @@ const Fragility = async () => {
         </Suspense>          
     );
 };
+
+export const fetchCache = 'force-no-store';
 
 export default Fragility;

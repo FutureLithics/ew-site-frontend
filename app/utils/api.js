@@ -76,7 +76,7 @@ const processDataSet = async (data, type = 'climate') => {
 };
 
 const fileParser = async (url) => {
-    const file = await axios.get(url);
+    const file = await axios(url);
     const data = Papa.parse(file.data, { header: true });
 
     return data.data;
