@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import FragilityContext from './FragilityContext';
+import FragilityContext from '../../_components/PageComponents/FragilityContext';
 import "rsuite/dist/rsuite-no-reset.min.css";
 import Loader from "@/app/_components/Loader";
 
