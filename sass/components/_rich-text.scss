@@ -1,39 +1,39 @@
 .rich-text {
-    color: theme("colors.slate.900");
+  color: theme("colors.slate.900");
 
-    h1 {
-        font-size: 4rem;
-    }
+  h1 {
+    font-size: 4rem;
+  }
 
-    h2 {
-        font-size: 3rem;
-    }
+  h2 {
+    font-size: 3rem;
+  }
 
-    h3 {
-        font-size: 1.75rem;
-        font-weight: bold;
-        color: theme("colors.slate.400");
-        margin-bottom: 1rem;
-    }
+  h3 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: theme("colors.slate.400");
+    margin-bottom: 1rem;
+  }
 
-    h4 {
-        font-size: 1.5rem;
-    }
+  h4 {
+    font-size: 1.5rem;
+  }
 
-    h5 {
-        font-size: 1.25rem;
-    }
+  h5 {
+    font-size: 1.25rem;
+  }
 
-    h6 {
-        font-size: 1rem;
-    }
+  h6 {
+    font-size: 1rem;
+  }
 
-    p {
-        margin-bottom: 0.75rem;
-    }
+  p {
+    margin-bottom: 0.75rem;
+  }
 
-    strong {
-        font-weight: theme("fontWeight.extrabold");
-        color: black;
-    }
+  strong {
+    font-weight: theme("fontWeight.extrabold");
+    color: black;
+  }
 }
