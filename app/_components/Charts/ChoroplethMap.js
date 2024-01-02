@@ -116,12 +116,13 @@ const ChoroplethMap = ({ data }) => {
     );
 
     const options = {
-      color: scheme.color,
-      containerRef: ref,
-      scaleReversed: scheme.scaleReversed,
-      topoData: topoData,
-      level,
-      fullScreen,
+        map: 'climate',
+        color: scheme.color,
+        containerRef: ref,
+        scaleReversed: scheme.scaleReversed,
+        topoData: topoData,
+        level,
+        fullScreen,
     };
 
     new Choropleth("#choropleth", mapData, options);
