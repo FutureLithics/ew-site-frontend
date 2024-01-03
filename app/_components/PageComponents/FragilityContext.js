@@ -9,7 +9,7 @@ const FragilityContext = async () => {
 
     return (
         <>
-            <FragilityContainer data={data}/>
+            <FragilityContainer data={data} success={res.success}/>
         </>            
     );
 };
