@@ -6,34 +6,41 @@ import Choropleth from "./charts/choropleth";
 import Loader from "../Loader";
 
 var topoData;
+var choroplethMap;
 
 const VARIABLES = [
-    {display: "Income", name: 'income', color: 'divergingGreen'}
-]
+    { display: "Income", var: "a", avg: "a_natl", color: "divergingGreen" },
+];
 
 const ChoroplethMap = ({ data }) => {
-
     const [scheme, setScheme] = useState(VARIABLES[0]);
-
-    const mapData = new Map();
     const ref = useRef();
     const [loading, setLoading] = useState(true);
 
     const renderMap = () => {
+        const mapData = new Map();
+
         Object.keys(data).map((key) =>
-            mapData.set(key, data[key][scheme.name]),
+            mapData.set(key, Number(data[key][scheme.var])),
         );
 
+        const avg = Number(data[Object.keys(data)[0]][scheme.avg]);
+
         const options = {
-            map: 'fragility',
+            map: "fragility",
             color: scheme.color,
             containerRef: ref,
             topoData: topoData,
             width: 960,
-            height: 600
+            height: 600,
+            avg,
         };
 
-        new Choropleth("#choropleth-fragility", mapData, options);
+        choroplethMap = new Choropleth(
+            "#choropleth-fragility",
+            mapData,
+            options,
+        );
     };
 
     const getTopoData = () => {
@@ -46,7 +53,7 @@ const ChoroplethMap = ({ data }) => {
 
     useEffect(() => {
         if (loading) {
-        getTopoData();
+            getTopoData();
         }
     }, []);
 
@@ -58,19 +65,31 @@ const ChoroplethMap = ({ data }) => {
         }
     }, [loading]);
 
-    console.log(data, 'data')
+    useEffect(() => {
+        if (data && choroplethMap && !loading) {
+            const mapData = new Map();
+
+            Object.keys(data).map((key) =>
+                mapData.set(key, Number(data[key][scheme.var])),
+            );
+
+            const avg = Number(data[Object.keys(data)[0]][scheme.avg]);
+
+            choroplethMap.updateMap(mapData, avg);
+        }
+    }, [data]);
 
     return (
         <div className="flex flex-col w-full">
-        {loading ? (
-            <Loader />
-        ) : (
-            <div
-                id="choropleth-fragility"
-                ref={ref}
-                className={`bg-slate-400 p-8 rounded flex content-center`}
-            ></div>
-        )}
+            {loading ? (
+                <Loader />
+            ) : (
+                <div
+                    id="choropleth-fragility"
+                    ref={ref}
+                    className={`bg-slate-400 p-8 rounded flex content-center`}
+                ></div>
+            )}
         </div>
     );
 };

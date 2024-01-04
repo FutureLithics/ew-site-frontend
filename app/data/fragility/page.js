@@ -1,19 +1,18 @@
 import { Suspense } from "react";
-import FragilityContext from '../../_components/PageComponents/FragilityContext';
+import FragilityContext from "../../_components/PageComponents/FragilityContext";
 import "rsuite/dist/rsuite-no-reset.min.css";
 import Loader from "@/app/_components/Loader";
 
 const Fragility = async () => {
-
     return (
         <Suspense fallback={<Loader />}>
             <main className="data-charts w-screen flex min-h-screen flex-col items-center justify-between p-12">
                 <FragilityContext />
-            </main>  
-        </Suspense>          
+            </main>
+        </Suspense>
     );
 };
 
-export const fetchCache = 'force-no-store';
+export const fetchCache = "force-no-store";
 
 export default Fragility;

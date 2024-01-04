@@ -1,23 +1,23 @@
 import * as d3 from "d3";
 
 export default class Line {
-    constructor(id, data, options){
+    constructor(id, data, options) {
         this.elementId = id;
         this.data = data;
         this.options = options;
 
         this.dimensions = {
             x: 960,
-            y: 240
-        }
+            y: 240,
+        };
 
         this.margins = {
             left: 60,
             right: 60,
             top: 60,
             bottom: 60,
-        }
-        
+        };
+
         this.initialSetup();
     }
 
@@ -31,7 +31,10 @@ export default class Line {
         this.container = d3.select(this.elementId);
         this.container.selectAll("*").remove();
         this.svg = this.container.append("svg");
-        this.svg.attr("viewBox", `0 0 ${this.dimensions.x} ${this.dimensions.y}`);
+        this.svg.attr(
+            "viewBox",
+            `0 0 ${this.dimensions.x} ${this.dimensions.y}`,
+        );
         this.svg.attr("preserveAspectRatio", "xMinYMin meet");
 
         this.mainGroup = this.svg.append("g");
@@ -40,69 +43,85 @@ export default class Line {
         this.height = this.svg.attr("height");
     }
 
-    setXTicks(){
-        const array = [0,1,2,3,4,5];
+    setXTicks() {
+        const array = [0, 1, 2, 3, 4, 5];
         const int = d3.max(this.data, (d) => d.y) / 5;
 
         return array.map((d) => {
             return Math.floor(d * int);
-        })
+        });
     }
 
-    setAxes(){
-        this.scaleX = d3.scaleTime()
-            .domain(d3.extent(this.data, (d) => d.x ))
-            .range([this.margins.left, this.dimensions.x - this.margins.left] );
+    setAxes() {
+        this.scaleX = d3
+            .scaleTime()
+            .domain(d3.extent(this.data, (d) => d.x))
+            .range([this.margins.left, this.dimensions.x - this.margins.left]);
 
-        this.scaleY = d3.scaleLinear()
+        this.scaleY = d3
+            .scaleLinear()
             .domain([0, d3.max(this.data, (d) => d.y) + 1])
-            .range([this.dimensions.y - this.margins.top, this.margins.top])
+            .range([this.dimensions.y - this.margins.top, this.margins.top]);
 
-        this.axisX = d3.axisBottom(this.scaleX).ticks(12).tickFormat(d3.timeFormat("%B"));
+        this.axisX = d3
+            .axisBottom(this.scaleX)
+            .ticks(12)
+            .tickFormat(d3.timeFormat("%B"));
 
-        this.axisY = d3.axisLeft(this.scaleY).tickValues(this.setXTicks()); 	
+        this.axisY = d3.axisLeft(this.scaleY).tickValues(this.setXTicks());
 
-        this.bottomAxis = this.mainGroup.append("g")
+        this.bottomAxis = this.mainGroup
+            .append("g")
             .attr("class", "text-secondary")
-            .attr("transform", `translate(${0}, ${this.dimensions.y - this.margins.left})`)
+            .attr(
+                "transform",
+                `translate(${0}, ${this.dimensions.y - this.margins.left})`,
+            );
 
-        this.leftAxis = this.mainGroup.append("g")
+        this.leftAxis = this.mainGroup
+            .append("g")
             .attr("class", "text-secondary")
             .attr("transform", `translate(${this.margins.left}, 0)`)
-                .call(this.axisY);
+            .call(this.axisY);
 
         this.bottomAxis.call(this.axisX);
 
-        this.mainGroup.append("g")
-            .attr("transform", `translate(${this.dimensions.x / 3}, ${this.dimensions.y - 10})`)
+        this.mainGroup
+            .append("g")
+            .attr(
+                "transform",
+                `translate(${this.dimensions.x / 3}, ${
+                    this.dimensions.y - 10
+                })`,
+            )
             .append("text")
-            .attr('text-anchor', 'start')
+            .attr("text-anchor", "start")
             .text(() => {
-                if (this.options.xLabel){
+                if (this.options.xLabel) {
                     return this.options.xLabel;
                 }
             });
 
-        d3.selectAll(".text-secondary .domain")
-            .style("stroke", "darkgray")
+        d3.selectAll(".text-secondary .domain").style("stroke", "darkgray");
     }
 
     draw() {
-        const line =  d3.line()
-            .x( (d) => this.scaleX(d.x))
-            .y( (d) => this.scaleY(d.y));
+        const line = d3
+            .line()
+            .x((d) => this.scaleX(d.x))
+            .y((d) => this.scaleY(d.y));
 
-        this.linesGroup = this.mainGroup.append("g")
+        this.linesGroup = this.mainGroup.append("g");
 
         this.lines = this.linesGroup
             .append("path")
             .attr("d", line(this.data))
-            .attr("class", "chart-lines" )
+            .attr("class", "chart-lines")
             .attr("stroke", "lightgreen")
-            .attr('fill', 'none')
+            .attr("fill", "none")
             .attr("stroke-width", 3);
 
-        console.log(this.scaleX(this.options.date))
+        console.log(this.scaleX(this.options.date));
 
         this.verticalLine = this.linesGroup
             .append("line")
@@ -112,7 +131,7 @@ export default class Line {
             .attr("x1", () => this.scaleX(this.options.date))
             .attr("x2", () => this.scaleX(this.options.date))
             .attr("y2", this.scaleY.range()[1])
-            .attr("y1", () => this.scaleY.range()[0])
+            .attr("y1", () => this.scaleY.range()[0]);
     }
 
     updateDate(date) {
@@ -126,8 +145,6 @@ export default class Line {
             .attr("x1", () => this.scaleX(date))
             .attr("x2", () => this.scaleX(date))
             .attr("y2", this.scaleY.range()[1])
-            .attr("y1", () => this.scaleY.range()[0])
+            .attr("y1", () => this.scaleY.range()[0]);
     }
-
-
 }

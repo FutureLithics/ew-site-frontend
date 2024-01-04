@@ -3,7 +3,12 @@ import Papa from "papaparse";
 const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
-import { dataByState, dataByCounty, dataByPlace, processFragilityData } from "./dataParser.js";
+import {
+    dataByState,
+    dataByCounty,
+    dataByPlace,
+    processFragilityData,
+} from "./dataParser.js";
 
 const config = {
     headers: { Authorization: `bearer ${token}` },
@@ -47,14 +52,13 @@ const processPageContent = (data) => {
     }
 };
 
-const processDataSet = async (data, type = 'climate') => {
+const processDataSet = async (data, type = "climate") => {
     const url = data.data?.attributes?.DataSet?.DataSet?.data?.attributes?.url;
 
     try {
         const csv = await fileParser(url);
 
-
-        if(type == 'fragility'){
+        if (type == "fragility") {
             const data = processFragilityData(csv);
 
             return { success: true, data };
@@ -63,11 +67,10 @@ const processDataSet = async (data, type = 'climate') => {
                 stateData: dataByState(csv),
                 countyData: dataByCounty(csv),
                 placeData: dataByPlace(csv),
-            };  
-            
+            };
+
             return { success: true, data: dataSet };
         }
-
 
         // return { success: true, data: dataSet };
     } catch (err) {
@@ -90,7 +93,7 @@ export const fetchFragilityDataSet = async (id = 2) => {
     try {
         const response = await axios.get(url, config);
 
-        return await processDataSet(response.data, 'fragility');
+        return await processDataSet(response.data, "fragility");
     } catch (err) {
         return { succes: false, error: err };
     }

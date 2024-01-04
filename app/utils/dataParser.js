@@ -172,7 +172,7 @@ export const dataByCounty = (data) => {
 
 /*
  * I'd like to etl this structure as:
- * { 
+ * {
  *   "2010": {
  *      "10": {
  *        "01001":{
@@ -181,65 +181,67 @@ export const dataByCounty = (data) => {
  *      }
  *    }
  * }
- * 
+ *
  * for slider ticker values: Object.keys(years).map((year) => Object.keys(year).map((month) => count += 1 ) );
  * get trendlines per year over monthly vals
- * 
+ *
  * This processing should be done "server-side" so as not to bog down user's client. This will be a massive data structure
  */
 
 export const processFragilityData = (data) => {
-    // create three arrays: 
+    // create three arrays:
     // 1. Can just use Object.keys countyData for slider
     // 2. One that contains the monthly data by county
     // 3. Array with year data for national avg by month (Line Chart)
     const slices = processFragilitySliderData(data);
 
-    const countyData = slices.slice(0, slices.length-1).reduce((obj, item) => {
-        if([item] != undefined){
-            return { ...obj, [item]: {} }
-        }   
-    }, {});
+    const countyData = slices
+        .slice(0, slices.length - 1)
+        .reduce((obj, item) => {
+            if ([item] != undefined) {
+                return { ...obj, [item]: {} };
+            }
+        }, {});
 
     const natlData = {};
 
     data.map((d) => {
         processFragilityDataByCounty(d, countyData);
         processFragilityDataByNatl(d, natlData);
-    })
+    });
 
     return {
         countyData,
-        natlData
-    }
-}
+        natlData,
+    };
+};
 
 const processFragilitySliderData = (data) => {
     return [...new Set(data.map((d) => d.period))];
-}
+};
 
 const processFragilityDataByCounty = (d, object) => {
     if (d.state_fips_code && d.county_fips_code && d.period) {
         const code = String(d.state_fips_code) + String(d.county_fips_code);
         const period = object[d.period];
 
-        if ( period ) {
+        if (period) {
             object[d.period][code] = {
                 a: d.income_total_a,
                 a_natl: d.income_total_a_natl_avg,
                 c: d.income_total_c,
                 c_natl: d.income_total_c_natl_avg,
-                population: d.population
+                population: d.population,
             };
         }
     }
-}
+};
 
 const processFragilityDataByNatl = (d, object) => {
     if (d.period) {
         const year = d.period.split("-")[0];
 
-        if (!object[year]){
+        if (!object[year]) {
             object[year] = {};
         }
 
@@ -249,7 +251,7 @@ const processFragilityDataByNatl = (d, object) => {
             object[year][d.period] = {
                 a_natl: d.income_total_a_natl_avg,
                 c_natl: d.income_total_c_natl_avg,
-            };            
-        }  
+            };
+        }
     }
-}
+};

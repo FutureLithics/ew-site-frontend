@@ -4,7 +4,7 @@ import * as topojson from "topojson";
 const colorSchemes = {
     cold: d3.interpolateBlues,
     hot: d3.interpolateReds,
-    divergingGreen: d3.interpolateBuGn
+    divergingGreen: d3.interpolateRdYlGn,
 };
 
 export default class Choropleth {
@@ -30,9 +30,22 @@ export default class Choropleth {
         this.color = d3.scaleSequential(orientation, colorScheme);
     }
 
+    fragilityColors() {
+        const range = d3.extent(this.data.values());
+
+        const colorScheme = colorSchemes[this.options.color];
+
+        this.color = d3.scaleDiverging(
+            [range[0], this.options.avg, range[1]],
+            colorScheme,
+        );
+    }
+
     setColorScale() {
         if (this.map == "climate") {
             this.climateColors();
+        } else if (this.map == "fragility") {
+            this.fragilityColors();
         }
     }
 
@@ -83,7 +96,10 @@ export default class Choropleth {
         this.container = d3.select(this.elementId);
         this.container.selectAll("*").remove();
         this.svg = this.container.append("svg");
-        this.svg.attr("viewBox", `0 0 ${this.options.width} ${this.options.height}`);
+        this.svg.attr(
+            "viewBox",
+            `0 0 ${this.options.width} ${this.options.height}`,
+        );
         this.svg.attr("preserveAspectRatio", "xMinYMin meet");
 
         this.width = this.svg.attr("width");
@@ -116,17 +132,19 @@ export default class Choropleth {
     }
 
     setCountyEntityLines() {
-        this.entityLines
+        this.mapLines = this.entityLines
             .attr("class", "counties")
             .selectAll("path")
             .data(this.places.features)
             .enter()
             .append("path")
             .attr("d", this.path)
-            .attr("fill", (d) => this.coloringFxn(d))
-            .attr("stroke", "gray")
             .on("mouseover", (d) => this.mouseover(d))
             .on("mouseout", (d) => this.mouseout(d));
+
+        this.mapLines
+            .attr("fill", (d) => this.coloringFxn(d))
+            .attr("stroke", "gray");
     }
 
     draw() {
@@ -154,6 +172,8 @@ export default class Choropleth {
 
         if (value?.temp) {
             return this.color(value.temp);
+        } else if (value) {
+            return this.color(value);
         } else {
             return "lightgray";
         }
@@ -206,6 +226,20 @@ export default class Choropleth {
             .style("top", d.pageY - 200 + "px");
     }
 
+    fragilityTooltip(d, val) {
+        const dataTarget = val;
+        const placeName = d.target.__data__?.properties?.name;
+
+        const value = dataTarget
+            ? Math.round(dataTarget * 100) / 100
+            : "No data available";
+
+        this.tooltip
+            .html(`<div><p>Name: ${placeName}</p><p>Value: ${value}</p></div>`)
+            .style("left", d.pageX - 50 + "px")
+            .style("top", d.pageY - 200 + "px");
+    }
+
     setTootlipHandlers() {
         this.mouseover = (d) => {
             const classes = this.options.fullScreen
@@ -216,6 +250,8 @@ export default class Choropleth {
             const vals = this.data.get(d.target.__data__.id);
             if (this.map == "climate") {
                 this.climateTooltip(d, vals);
+            } else if (this.map == "fragility") {
+                this.fragilityTooltip(d, vals);
             }
         };
 
@@ -232,5 +268,21 @@ export default class Choropleth {
         });
 
         this.svg.call(zoom).call(zoom.transform, d3.zoomIdentity);
+    }
+
+    updateMap(data, avg) {
+        // new data slice passed in.
+        this.data = data;
+        this.options.avg = avg;
+
+        // recalibrate coloring feature
+        this.setColorScale();
+
+        this.mapLines
+            .merge(this.mapLines)
+            .transition()
+            .duration(250)
+            .attr("fill", (d) => this.coloringFxn(d))
+            .attr("stroke", "gray");
     }
 }
