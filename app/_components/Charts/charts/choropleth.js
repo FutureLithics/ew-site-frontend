@@ -4,6 +4,7 @@ import * as topojson from "topojson";
 const colorSchemes = {
     cold: d3.interpolateBlues,
     hot: d3.interpolateReds,
+    divergingGreen: d3.interpolateBuGn
 };
 
 export default class Choropleth {
@@ -36,7 +37,7 @@ export default class Choropleth {
     }
 
     setTopoJSON() {
-        if (this.options.level.name == "places") {
+        if (this.options?.level?.name == "places") {
             return topojson.feature(
                 this.usMap,
                 this.usMap.objects.simple_geojson,
@@ -49,7 +50,7 @@ export default class Choropleth {
     setGeoData() {
         this.featureIds = Object.keys(this.data);
         this.places = this.setTopoJSON();
-        if (this.options.level.name == "places") {
+        if (this.options?.level?.name == "places") {
             this.placemesh = topojson.mesh(
                 this.usMap,
                 this.usMap.objects.simple_geojson,
@@ -82,7 +83,7 @@ export default class Choropleth {
         this.container = d3.select(this.elementId);
         this.container.selectAll("*").remove();
         this.svg = this.container.append("svg");
-        this.svg.attr("viewBox", "0 0 960 880");
+        this.svg.attr("viewBox", `0 0 ${this.options.width} ${this.options.height}`);
         this.svg.attr("preserveAspectRatio", "xMinYMin meet");
 
         this.width = this.svg.attr("width");
@@ -90,7 +91,7 @@ export default class Choropleth {
     }
 
     setPathFeature() {
-        if (this.options.level.name == "places") {
+        if (this.options?.level?.name == "places") {
             this.projection = d3
                 .geoAlbersUsa()
                 .fitSize([960, 600], this.places);
@@ -139,7 +140,7 @@ export default class Choropleth {
 
         this.entityLines = this.g.append("g");
 
-        if (this.options.level.name == "places") {
+        if (this.options?.level?.name == "places") {
             this.setPlacesEntityLines();
         } else {
             this.setCountyEntityLines();
@@ -171,7 +172,7 @@ export default class Choropleth {
             return "Not Available";
         }
 
-        if (this.options.level.name == "places") {
+        if (this.options?.level?.name == "places") {
             return keyword;
         } else {
             let max;

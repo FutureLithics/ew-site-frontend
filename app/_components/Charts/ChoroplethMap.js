@@ -123,6 +123,8 @@ const ChoroplethMap = ({ data }) => {
         topoData: topoData,
         level,
         fullScreen,
+        width: 960,
+        height: 880
     };
 
     new Choropleth("#choropleth", mapData, options);

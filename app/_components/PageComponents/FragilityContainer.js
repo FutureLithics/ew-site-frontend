@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import { Slider } from 'rsuite';
 
 import LineChart from '../Charts/LineChart';
+import FragilityChoropleth from '../Charts/FragilityChoropleth';
 
 const FragilityContainer = ({data, success}) => {
 
@@ -67,13 +68,20 @@ const FragilityContainer = ({data, success}) => {
 
 
     return (
-        <div className="w-full">
-            <Slider 
-                max={keys.length - 1} 
-                onChange={changeSliderPos}
-                tooltip={false} />
-            <div>
-                <LineChart data={natlDataset} year={year} date={date} />
+        <div className="w-full px-2 md:px-24 flex justify-center content-center">
+            <div className="w-full md:w-3/5 flex flex-col justify-center content-center">
+                <div>
+                    <Slider 
+                        max={keys.length - 1} 
+                        onChange={changeSliderPos}
+                        tooltip={false} />                    
+                </div>
+                <div className="mt-8">
+                    <FragilityChoropleth data={dataSlice} />
+                </div>
+                <div>
+                    <LineChart data={natlDataset} year={year} date={date} />
+                </div>
             </div>
         </div>            
     );
