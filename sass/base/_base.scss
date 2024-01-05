@@ -47,8 +47,12 @@ html {
     border-radius: 2%;
     background-color: rgba(112, 128, 144, 0.5);
     overflow: hidden;
+    
+    @media screen and (max-width: 780px) {
+        height: 60vh;
+    }
 
-    @media screen and (max-width: 56em) {
+    @media screen and (max-width: 540px) {
         height: 30vh;
     }
 

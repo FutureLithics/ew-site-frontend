@@ -180,7 +180,7 @@ export default class Choropleth {
 
         if (value?.temp) {
             return this.color(value.temp);
-        } else if (value) {
+        } else if (value && this.map == "fragility") {
             return this.color(value);
         } else {
             return "lightgray";

@@ -14,6 +14,7 @@ import {
 
 const config = {
     headers: { Authorization: `bearer ${token}` },
+    next: { revalidate: 10 },
 };
 
 export const fetchPageData = async (id = 1) => {
