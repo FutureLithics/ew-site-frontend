@@ -75,8 +75,6 @@ const ChoroplethMap = ({ data, attributes }) => {
         }
     }, [data]);
 
-    console.log(attributes);
-
     return (
         <div className="flex flex-col w-full">
             {loading ? (

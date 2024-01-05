@@ -55,14 +55,14 @@ const processPageContent = (data) => {
     }
 };
 
-const processDataSet = async (data, type = "climate") => {
+const processDataSet = async (data, type = "climate", definitions = null) => {
     const url = data.data?.attributes?.DataSet?.DataSet?.data?.attributes?.url;
 
     try {
         const csv = await fileParser(url);
 
         if (type == "fragility") {
-            const data = processFragilityData(csv);
+            const data = processFragilityData(csv, definitions);
 
             return { success: true, data };
         } else {
@@ -95,8 +95,9 @@ export const fetchFragilityDataSet = async (id = 2) => {
 
     try {
         const response = await axios.get(url, config);
+        const definitions = response.data?.data?.attributes?.DatasetType[0];
 
-        return await processDataSet(response.data, "fragility");
+        return await processDataSet(response.data, "fragility", definitions);
     } catch (err) {
         return { success: false, error: err };
     }

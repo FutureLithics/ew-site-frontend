@@ -35,7 +35,7 @@ const MainComponent = ({ properties }) => {
                         data={natlDataset}
                         year={year}
                         date={date}
-                        xLabel={attributes?.xLabel}
+                        attributes={attributes}
                     />
                 </div>
                 <div className="mt-8">
