@@ -121,8 +121,6 @@ export default class Line {
             .attr("fill", "none")
             .attr("stroke-width", 3);
 
-        console.log(this.scaleX(this.options.date));
-
         this.verticalLine = this.linesGroup
             .append("line")
             .attr("stroke-width", 4)

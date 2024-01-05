@@ -7,7 +7,7 @@ import Line from "./charts/line";
 
 var chartObject;
 
-const LineChart = ({ data, year, date }) => {
+const LineChart = ({ data, year, date, xLabel }) => {
     useEffect(() => {
         if (data && Object.keys(data).length > 0) {
             const lineData = Object.keys(data).map((key) => {
@@ -15,14 +15,16 @@ const LineChart = ({ data, year, date }) => {
                 return { x: parseTime(key), y: val };
             });
 
+            const label = xLabel ? `${xLabel} ${year}` : "";
+
             let options = {
-                xLabel: `Showing average income for Year: ${year}`,
+                xLabel: label,
                 date: parseTime(date),
             };
 
             chartObject = new Line("#line-chart-yearly", lineData, options);
         }
-    }, [data]);
+    }, [data, xLabel]);
 
     useEffect(() => {
         if (chartObject) {

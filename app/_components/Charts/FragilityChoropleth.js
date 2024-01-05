@@ -8,12 +8,9 @@ import Loader from "../Loader";
 var topoData;
 var choroplethMap;
 
-const VARIABLES = [
-    { display: "Income", var: "a", avg: "a_natl", color: "divergingGreen" },
-];
+// switch these to variables in backend that can be dynamically assigned to specific datasets
 
-const ChoroplethMap = ({ data }) => {
-    const [scheme, setScheme] = useState(VARIABLES[0]);
+const ChoroplethMap = ({ data, attributes }) => {
     const ref = useRef();
     const [loading, setLoading] = useState(true);
 
@@ -21,16 +18,17 @@ const ChoroplethMap = ({ data }) => {
         const mapData = new Map();
 
         Object.keys(data).map((key) =>
-            mapData.set(key, Number(data[key][scheme.var])),
+            mapData.set(key, Number(data[key][attributes.var])),
         );
 
-        const avg = Number(data[Object.keys(data)[0]][scheme.avg]);
+        const avg = Number(data[Object.keys(data)[0]][attributes.avg]);
 
         const options = {
             map: "fragility",
-            color: scheme.color,
+            color: attributes.color,
             containerRef: ref,
             topoData: topoData,
+            scaleReversed: attributes.scaleReversed,
             width: 960,
             height: 600,
             avg,
@@ -52,16 +50,14 @@ const ChoroplethMap = ({ data }) => {
     };
 
     useEffect(() => {
-        if (loading) {
+        if (loading && attributes != null && data) {
             getTopoData();
         }
-    }, []);
+    }, [attributes]);
 
     useEffect(() => {
-        if (!loading) {
+        if (!loading && data) {
             renderMap();
-        } else {
-            getTopoData();
         }
     }, [loading]);
 
@@ -70,14 +66,16 @@ const ChoroplethMap = ({ data }) => {
             const mapData = new Map();
 
             Object.keys(data).map((key) =>
-                mapData.set(key, Number(data[key][scheme.var])),
+                mapData.set(key, Number(data[key][attributes.var])),
             );
 
-            const avg = Number(data[Object.keys(data)[0]][scheme.avg]);
+            const avg = Number(data[Object.keys(data)[0]][attributes.avg]);
 
             choroplethMap.updateMap(mapData, avg);
         }
     }, [data]);
+
+    console.log(attributes);
 
     return (
         <div className="flex flex-col w-full">

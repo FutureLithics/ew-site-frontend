@@ -1,3 +1,5 @@
+"use server";
+
 import axios from "axios";
 import Papa from "papaparse";
 const baseURL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -95,6 +97,20 @@ export const fetchFragilityDataSet = async (id = 2) => {
 
         return await processDataSet(response.data, "fragility");
     } catch (err) {
-        return { succes: false, error: err };
+        return { success: false, error: err };
+    }
+};
+
+export const fetchSingleCollection = async (
+    string = "fragility-dataset-ref",
+) => {
+    const url = `${baseURL}/api/${string}?populate=deep`;
+
+    try {
+        const data = await axios.get(url, config);
+
+        return { success: true, data: data.data };
+    } catch (err) {
+        return { success: false, error: err };
     }
 };

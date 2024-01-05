@@ -1,14 +1,14 @@
 // import {useEffect, useState, Suspense} from 'react';
-import { fetchFragilityDataSet } from "../../utils/api";
+import { fetchSingleCollection } from "../../utils/api";
 import FragilityContainer from "./FragilityContainer";
 
 const FragilityContext = async () => {
-    const res = await fetchFragilityDataSet();
-    const data = await res.data;
+    const res = await fetchSingleCollection();
+    const data = res.data;
 
     return (
         <>
-            <FragilityContainer data={data} success={res.success} />
+            <FragilityContainer collection={data} success={res.success} />
         </>
     );
 };

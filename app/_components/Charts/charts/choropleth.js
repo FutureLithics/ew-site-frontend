@@ -4,7 +4,11 @@ import * as topojson from "topojson";
 const colorSchemes = {
     cold: d3.interpolateBlues,
     hot: d3.interpolateReds,
-    divergingGreen: d3.interpolateRdYlGn,
+    divergingGrYlRd: d3.interpolateRdYlGn,
+    divergingRdYlBu: d3.interpolateRdYlBu,
+    divergingBrGr: d3.interpolateBrBG,
+    divergingPuGr: d3.interpolatePRGn,
+    divergingPuO: d3.interpolatePuOr,
 };
 
 export default class Choropleth {
@@ -33,10 +37,14 @@ export default class Choropleth {
     fragilityColors() {
         const range = d3.extent(this.data.values());
 
+        const orientation = this.options.scaleReversed
+            ? range.reverse()
+            : range;
+
         const colorScheme = colorSchemes[this.options.color];
 
         this.color = d3.scaleDiverging(
-            [range[0], this.options.avg, range[1]],
+            [orientation[0], this.options.avg, orientation[1]],
             colorScheme,
         );
     }
