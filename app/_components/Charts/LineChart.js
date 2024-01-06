@@ -7,22 +7,27 @@ import Line from "./charts/line";
 
 var chartObject;
 
-const LineChart = ({ data, year, date, attributes }) => {
+const roundValue = (value) => {
+    return Math.round(Number(value) * 100) / 100;
+};
+
+const LineChart = ({ data, date, attributes }) => {
     useEffect(() => {
         if (data && Object.keys(data).length > 0 && attributes) {
             const { xLabel, avg } = attributes;
 
             const lineData = Object.keys(data).map((key) => {
-                const val = Math.round(Number(data[key][avg]) * 100) / 100;
+                const val = roundValue(data[key][avg]);
 
                 return { x: parseTime(key), y: val };
             });
 
-            const label = xLabel ? `${xLabel} ${year}` : "";
+            const label = xLabel ? `${xLabel}` : "";
 
             let options = {
                 xLabel: label,
                 date: parseTime(date),
+                initialValue: roundValue(data[date][avg]),
             };
 
             chartObject = new Line("#line-chart-yearly", lineData, options);
@@ -31,7 +36,9 @@ const LineChart = ({ data, year, date, attributes }) => {
 
     useEffect(() => {
         if (chartObject) {
-            chartObject.updateDate(parseTime(date));
+            const { avg } = attributes;
+            const val = roundValue(data[date][avg]);
+            chartObject.updateDate(parseTime(date), val);
         }
     }, [date]);
 

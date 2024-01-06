@@ -25,7 +25,11 @@ const DataSelector = ({ dataSets, index, setIndex }) => {
                 {dataSets.map((d, i) => {
                     const title = d.attributes.Title;
 
-                    return <option key={`data-selector__${i}`} value={i}>{title}</option>;
+                    return (
+                        <option key={`data-selector__${i}`} value={i}>
+                            {title}
+                        </option>
+                    );
                 })}
             </select>
         </div>
@@ -33,20 +37,13 @@ const DataSelector = ({ dataSets, index, setIndex }) => {
 };
 
 const MainComponent = ({ properties }) => {
-    const {
-        keys,
-        changeSliderPos,
-        natlDataset,
-        year,
-        date,
-        dataSlice,
-        attributes,
-    } = properties;
+    const { keys, changeSliderPos, natlDataset, date, dataSlice, attributes } =
+        properties;
 
     return (
         <div className="w-full px-2 sm:px-24 flex justify-center content-center">
             <div className="w-full sm:w-3/5 flex flex-col justify-center content-center">
-                <div className="w-4/5 self-center">
+                <div className="w-4/5 self-center mb-4">
                     <h6 className="font-bold text-center pb-2 text-sm">
                         Use slider below to progress through time:
                     </h6>
@@ -61,7 +58,6 @@ const MainComponent = ({ properties }) => {
                 <div>
                     <LineChart
                         data={natlDataset}
-                        year={year}
                         date={date}
                         attributes={attributes}
                     />
@@ -94,7 +90,6 @@ const FragilityContainer = ({ collection, success }) => {
     // keys in this context are months/dates
     const [keys, setKeys] = useState([]);
     const [sliderPos, setSliderPos] = useState(0);
-    const [year, setYear] = useState("");
     const [date, setDate] = useState(null);
 
     // the month slice for the map
@@ -140,10 +135,7 @@ const FragilityContainer = ({ collection, success }) => {
 
     const changeSliderPos = (val, event) => {
         if (sliderPos != val) {
-            const yearPos = keys[val].split("-")[0];
-
             setDate(keys[val]);
-            setYear(yearPos);
             setSliderPos(val);
         }
     };
@@ -154,7 +146,7 @@ const FragilityContainer = ({ collection, success }) => {
             const countyData = data?.countyData;
 
             setDataSlice(countyData[keys[sliderPos]]);
-            setNatlDataset(natlData[year]);
+            setNatlDataset(natlData);
         }
     };
 
@@ -185,10 +177,7 @@ const FragilityContainer = ({ collection, success }) => {
                 setKeys(keyArray);
 
                 if (natlData) {
-                    const newYear = keyArray[sliderPos].split("-")[0];
-
                     setDate(keyArray[sliderPos]);
-                    setYear(newYear);
                 }
             }
         }
@@ -197,7 +186,7 @@ const FragilityContainer = ({ collection, success }) => {
     // ensure data is passed down on update
     useEffect(() => {
         recalibrateDataSets();
-    }, [sliderPos, year, loading]);
+    }, [sliderPos, date, loading]);
 
     return (
         <>
@@ -215,7 +204,6 @@ const FragilityContainer = ({ collection, success }) => {
                             keys,
                             changeSliderPos,
                             natlDataset,
-                            year,
                             date,
                             dataSlice,
                             attributes,

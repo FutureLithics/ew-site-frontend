@@ -1,5 +1,7 @@
 import * as d3 from "d3";
 
+const formatTime = d3.utcFormat("%b, %Y");
+
 export default class Line {
     constructor(id, data, options) {
         this.elementId = id;
@@ -58,17 +60,15 @@ export default class Line {
             .domain(d3.extent(this.data, (d) => d.x))
             .range([this.margins.left, this.dimensions.x - this.margins.left]);
 
-        const maxY = d3.max(this.data, (d) => d.y)
+        const maxY = d3.max(this.data, (d) => d.y);
 
         this.scaleY = d3
             .scaleLinear()
-            .domain([0, maxY + (maxY / 5)  ])
+            .domain([0, maxY + maxY / 5])
             .range([this.dimensions.y - this.margins.top, this.margins.top]);
 
-        this.axisX = d3
-            .axisBottom(this.scaleX)
-            .ticks(12)
-            .tickFormat(d3.timeFormat("%B"));
+        this.axisX = d3.axisBottom(this.scaleX).ticks(0);
+        //.tickFormat(d3.timeFormat("%B"));
 
         this.axisY = d3.axisLeft(this.scaleY).tickValues(this.setXTicks(maxY));
 
@@ -132,9 +132,11 @@ export default class Line {
             .attr("x2", () => this.scaleX(this.options.date))
             .attr("y2", this.scaleY.range()[1])
             .attr("y1", () => this.scaleY.range()[0]);
+
+        this.setAnnotation(this.options.date, this.options.initialValue);
     }
 
-    updateDate(date) {
+    updateDate(date, value) {
         this.verticalLine.remove();
 
         this.verticalLine = this.linesGroup
@@ -146,5 +148,29 @@ export default class Line {
             .attr("x2", () => this.scaleX(date))
             .attr("y2", this.scaleY.range()[1])
             .attr("y1", () => this.scaleY.range()[0]);
+
+        this.setAnnotation(date, value);
+    }
+
+    setAnnotation(date, value) {
+        if (this.annotation) {
+            this.annotation.remove();
+        }
+
+        this.annotation = this.linesGroup
+            .append("foreignObject")
+            .attr("x", () => this.scaleX(date) - 60)
+            .attr("y", () => this.scaleY.range()[1] - 55)
+            .attr("width", "120px")
+            .attr("height", "55px")
+            .attr("class", "line-chart-annotation")
+            .attr("viewBox", `0 0 ${150} ${55}`)
+            .attr("preserveAspectRatio", "xMinYMin meet");
+
+        this.annotation.append("xhtml:div").html(`<p>${formatTime(date)}</p>`);
+
+        this.annotation
+            .append("xhtml:div")
+            .html(`<p><strong>Value: </strong>${value}</p>`);
     }
 }

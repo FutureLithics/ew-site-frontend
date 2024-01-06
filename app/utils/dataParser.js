@@ -236,16 +236,10 @@ const processFragilityDataByCounty = (d, object, definitions) => {
 
 const processFragilityDataByNatl = (d, object, definitions) => {
     if (d.period) {
-        const year = d.period.split("-")[0];
-
-        if (!object[year]) {
-            object[year] = {};
-        }
-
         // the national averages will be the same for a period across counties
         // we don't need to perform more operations than necessary.
-        if (object[year][d.period] == null) {
-            object[year][d.period] = {
+        if (object[d.period] == null) {
+            object[d.period] = {
                 [definitions.Average]: d[definitions.Average],
             };
         }

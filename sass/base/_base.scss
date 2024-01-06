@@ -105,3 +105,13 @@ html {
 .rs-slider {
     width: 100%;
 }
+
+.line-chart-annotation {
+    position: absolute;
+    top: -10rem;
+    border: 1px solid slategray;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    padding: 0.1rem;
+    text-align: center;
+}
