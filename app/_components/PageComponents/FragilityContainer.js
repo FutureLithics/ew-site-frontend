@@ -37,7 +37,7 @@ const DataSelector = ({ dataSets, index, setIndex }) => {
 };
 
 const MainComponent = ({ properties }) => {
-    const { keys, changeSliderPos, natlDataset, date, dataSlice, attributes } =
+    const { keys, changeSliderPos, sliderPos, natlDataset, date, dataSlice, attributes } =
         properties;
 
     return (
@@ -52,6 +52,7 @@ const MainComponent = ({ properties }) => {
                             max={keys.length - 1}
                             onChange={changeSliderPos}
                             tooltip={false}
+                            value={sliderPos}
                         />
                     </div>
                 </div>
@@ -203,6 +204,7 @@ const FragilityContainer = ({ collection, success }) => {
                         properties={{
                             keys,
                             changeSliderPos,
+                            sliderPos,
                             natlDataset,
                             date,
                             dataSlice,
