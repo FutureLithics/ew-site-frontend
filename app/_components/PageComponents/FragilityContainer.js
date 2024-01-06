@@ -25,7 +25,7 @@ const DataSelector = ({ dataSets, index, setIndex }) => {
                 {dataSets.map((d, i) => {
                     const title = d.attributes.Title;
 
-                    return <option value={i}>{title}</option>;
+                    return <option key={`data-selector__${i}`} value={i}>{title}</option>;
                 })}
             </select>
         </div>

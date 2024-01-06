@@ -43,12 +43,12 @@ export default class Line {
         this.height = this.svg.attr("height");
     }
 
-    setXTicks() {
+    setXTicks(maxY) {
         const array = [0, 1, 2, 3, 4, 5];
-        const int = d3.max(this.data, (d) => d.y) / 5;
+        let int = maxY <= 1 ? (maxY * 100) / 5 : maxY / 5;
 
         return array.map((d) => {
-            return Math.floor(d * int);
+            return maxY <= 1 ? Math.floor(d * int) / 100 : Math.floor(d * int);
         });
     }
 
@@ -58,9 +58,11 @@ export default class Line {
             .domain(d3.extent(this.data, (d) => d.x))
             .range([this.margins.left, this.dimensions.x - this.margins.left]);
 
+        const maxY = d3.max(this.data, (d) => d.y)
+
         this.scaleY = d3
             .scaleLinear()
-            .domain([0, d3.max(this.data, (d) => d.y) + 1])
+            .domain([0, maxY + (maxY / 5)  ])
             .range([this.dimensions.y - this.margins.top, this.margins.top]);
 
         this.axisX = d3
@@ -68,7 +70,7 @@ export default class Line {
             .ticks(12)
             .tickFormat(d3.timeFormat("%B"));
 
-        this.axisY = d3.axisLeft(this.scaleY).tickValues(this.setXTicks());
+        this.axisY = d3.axisLeft(this.scaleY).tickValues(this.setXTicks(maxY));
 
         this.bottomAxis = this.mainGroup
             .append("g")

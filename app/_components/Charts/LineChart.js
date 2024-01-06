@@ -13,7 +13,8 @@ const LineChart = ({ data, year, date, attributes }) => {
             const { xLabel, avg } = attributes;
 
             const lineData = Object.keys(data).map((key) => {
-                const val = Math.round(Number(data[key][avg] * 100) / 100);
+                const val = Math.round(Number(data[key][avg]) * 100) / 100;
+
                 return { x: parseTime(key), y: val };
             });
 
