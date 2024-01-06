@@ -9,6 +9,29 @@ import { fetchFragilityDataSet } from "@/app/utils/api";
 import LineChart from "../Charts/LineChart";
 import FragilityChoropleth from "../Charts/FragilityChoropleth";
 
+const DataSelector = ({ dataSets, index, setIndex }) => {
+    if (!dataSets) {
+        return;
+    }
+
+    return (
+        <div className="flex flex-inline my-2">
+            <h5 className="font-bold text-lg">Showing data for: </h5>
+            <select
+                onChange={(e) => setIndex(e.target.value)}
+                value={index}
+                className="font-extrabold"
+            >
+                {dataSets.map((d, i) => {
+                    const title = d.attributes.Title;
+
+                    return <option value={i}>{title}</option>;
+                })}
+            </select>
+        </div>
+    );
+};
+
 const MainComponent = ({ properties }) => {
     const {
         keys,
@@ -23,12 +46,17 @@ const MainComponent = ({ properties }) => {
     return (
         <div className="w-full px-2 sm:px-24 flex justify-center content-center">
             <div className="w-full sm:w-3/5 flex flex-col justify-center content-center">
-                <div>
-                    <Slider
-                        max={keys.length - 1}
-                        onChange={changeSliderPos}
-                        tooltip={false}
-                    />
+                <div className="w-4/5 self-center">
+                    <h6 className="font-bold text-center pb-2 text-sm">
+                        Use slider below to progress through time:
+                    </h6>
+                    <div>
+                        <Slider
+                            max={keys.length - 1}
+                            onChange={changeSliderPos}
+                            tooltip={false}
+                        />
+                    </div>
                 </div>
                 <div>
                     <LineChart
@@ -55,6 +83,7 @@ const FragilityContainer = ({ collection, success }) => {
 
     // used for rendering variable options
     const [dataSets, setDataSets] = useState(null);
+    const [dataSetIndex, setDataSetIndex] = useState(0);
 
     // attributes passed from dataset to define colorscheme, etc...
     const [attributes, setAttributes] = useState(null);
@@ -76,6 +105,8 @@ const FragilityContainer = ({ collection, success }) => {
 
     const setAttributesFromData = (d) => {
         const display = d.attributes.Title;
+
+        // we access the first datasettype index because there should be only one
         const properties = d.attributes?.DatasetType[0];
         const {
             Variable,
@@ -127,17 +158,21 @@ const FragilityContainer = ({ collection, success }) => {
         }
     };
 
-    useEffect(() => {
-        if (collection) {
+    const updateDataSet = () => {
+        if (collection && success) {
             const dataSets = collection.data?.attributes?.data_sets;
 
             if (dataSets) {
-                fetchDataSet(dataSets.data[0].id);
-                setAttributesFromData(dataSets.data[0]);
+                fetchDataSet(dataSets.data[dataSetIndex].id);
+                setAttributesFromData(dataSets.data[dataSetIndex]);
                 setDataSets(dataSets);
             }
         }
-    }, [success]);
+    };
+
+    useEffect(() => {
+        updateDataSet();
+    }, [success, dataSetIndex]);
 
     useEffect(() => {
         if (!loading && Object.keys(data).length > 0) {
@@ -162,24 +197,31 @@ const FragilityContainer = ({ collection, success }) => {
     // ensure data is passed down on update
     useEffect(() => {
         recalibrateDataSets();
-    }, [sliderPos, year]);
+    }, [sliderPos, year, loading]);
 
     return (
         <>
             {loading ? (
                 <Loader />
             ) : (
-                <MainComponent
-                    properties={{
-                        keys,
-                        changeSliderPos,
-                        natlDataset,
-                        year,
-                        date,
-                        dataSlice,
-                        attributes,
-                    }}
-                />
+                <>
+                    <DataSelector
+                        dataSets={dataSets?.data}
+                        index={dataSetIndex}
+                        setIndex={setDataSetIndex}
+                    />
+                    <MainComponent
+                        properties={{
+                            keys,
+                            changeSliderPos,
+                            natlDataset,
+                            year,
+                            date,
+                            dataSlice,
+                            attributes,
+                        }}
+                    />
+                </>
             )}
         </>
     );

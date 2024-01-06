@@ -8,10 +8,9 @@ import Line from "./charts/line";
 var chartObject;
 
 const LineChart = ({ data, year, date, attributes }) => {
-
     useEffect(() => {
         if (data && Object.keys(data).length > 0 && attributes) {
-            const {xLabel, avg} = attributes
+            const { xLabel, avg } = attributes;
 
             const lineData = Object.keys(data).map((key) => {
                 const val = Math.round(Number(data[key][avg] * 100) / 100);
