@@ -72,14 +72,14 @@ const FrontPageWidget = ({ content }) => {
         <div className="front-page-widget flex flex-col md:flex-row ">
             <div className="flex flex-col content-center px-4 left-side pb-12 sm:pb-0">
                 <div className="flex flex-col justify-center content-center">
-                    <div className="relative w-40 h-40 self-center rounded-full overflow-hidden flex content-center justify-center border-2 border-slate-200">
+                    <div className="relative w-52 h-auto rounded self-center overflow-hidden flex content-center justify-center border-2 border-slate-200">
                         <img
-                            className="absolute w-36 z-20"
+                            className="object-cover z-20"
                             src={`${photoAtt?.url}`}
                             alt={photoAtt?.alternativeTex}
                         />
                     </div>
-                    <h3 className="text-2xl text-center font-extrabold mb-4">
+                    <h3 className="text-2xl text-center font-extrabold mt-4 mb-2">
                         {Header}
                     </h3>
                     <ContactListItems sections={contactSections} />
