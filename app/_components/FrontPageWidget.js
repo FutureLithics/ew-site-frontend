@@ -54,7 +54,7 @@ const MainContentSection = ({ content }) => {
 };
 
 const FrontPageWidget = ({ content }) => {
-    const { MainIntroClassic, Photo, Header, CvResume } = content;
+    const { MainIntroClassic, Photo, Header, CvResume, SecondaryContact } = content;
     const photoAtt = Photo?.data?.attributes;
 
     const contactSections = [
@@ -83,6 +83,14 @@ const FrontPageWidget = ({ content }) => {
                         {Header}
                     </h3>
                     <ContactListItems sections={contactSections} />
+                    <div className="mt-8 md:w-4/5 self-center text-center text-sm secondary-contact">
+                        <ReactMarkdown
+                            className="rich-text"
+                            rehypePlugins={[rehypeRaw]}
+                        >
+                            {SecondaryContact}
+                        </ReactMarkdown>                
+                    </div>
                 </div>
             </div>
             <div className="flex flex-col justify-start pt-0 px-4">
