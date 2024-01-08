@@ -35,7 +35,7 @@ const LineChart = ({ data, date, attributes }) => {
     }, [data, attributes]);
 
     useEffect(() => {
-        if (chartObject) {
+        if (chartObject && data[date]) {
             const { avg } = attributes;
             const val = roundValue(data[date][avg]);
             chartObject.updateDate(parseTime(date), val);

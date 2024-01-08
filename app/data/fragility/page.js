@@ -13,7 +13,6 @@ const Fragility = async () => {
     );
 };
 
-export const fetchCache = "force-no-store";
-export const revalidate = 1;
+export const revalidate = 10;
 
 export default Fragility;
