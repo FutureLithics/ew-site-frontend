@@ -1,6 +1,6 @@
 const Selector = ({
     collection,
-    currentValue = null,
+    currentValue = "",
     handler,
     label,
     classes = "flex justify-between mb-2",
@@ -11,10 +11,12 @@ const Selector = ({
 
     return (
         <div className={classes}>
-            <span className="me-2 align-middle font-bold">{label}</span>
+            {label && (
+                <span className="me-2 align-middle font-bold">{label}</span>
+            )}
             <select
                 onChange={handler}
-                className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50"
+                className="px-2 pe-4 shadow-sm shadow-baseBlue rounded cursor-pointer bg-slate-50 hover:bg-slate-100"
                 value={currentValue}
             >
                 {collection.map((item) => {

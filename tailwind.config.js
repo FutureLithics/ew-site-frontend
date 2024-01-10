@@ -26,6 +26,7 @@ module.exports = {
             },
             colors: {
                 baseGreen: "#3D6C62",
+                baseBlue: "#0A4679",
             },
         },
     },

@@ -116,3 +116,45 @@ export const fetchSingleCollection = async (
         return { success: false, error: err };
     }
 };
+
+export const fetchBlogItems = async (size = 6, offset = 0, filters = []) => {
+    const limit = `pagination[limit]=${size}&`;
+    const start = `pagination[start]=${offset}&`;
+
+    let params = `${limit}${start}`;
+
+    filters.map((f) => {
+        let filter;
+        if (f.secondKey) {
+            filter = `filters[${f.key}][${f.secondKey}][${f.operator}]=${f.value}&`;
+        } else {
+            filter = `filters[${f.key}][${f.operator}]=${f.value}&`;
+        }
+
+        params += filter;
+    });
+
+    console.log(params, filters);
+
+    const url = `${baseURL}/api/posts?${params}populate=deep`;
+
+    try {
+        const res = await axios.get(url, config);
+
+        return { success: true, data: res.data };
+    } catch (err) {
+        return { success: false, error: err };
+    }
+};
+
+export const fetchTaxonomies = async (deep = false) => {
+    const url = `${baseURL}/api/taxonomies?${deep ? "populate=deep" : ""}`;
+
+    try {
+        const res = await axios.get(url, config);
+
+        return { success: true, data: res.data };
+    } catch (err) {
+        return { success: false, error: err };
+    }
+};
