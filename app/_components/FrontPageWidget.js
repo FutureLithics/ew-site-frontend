@@ -54,7 +54,8 @@ const MainContentSection = ({ content }) => {
 };
 
 const FrontPageWidget = ({ content }) => {
-    const { MainIntroClassic, Photo, Header, CvResume, SecondaryContact } = content;
+    const { MainIntroClassic, Photo, Header, CvResume, SecondaryContact } =
+        content;
     const photoAtt = Photo?.data?.attributes;
 
     const contactSections = [
@@ -89,7 +90,7 @@ const FrontPageWidget = ({ content }) => {
                             rehypePlugins={[rehypeRaw]}
                         >
                             {SecondaryContact}
-                        </ReactMarkdown>                
+                        </ReactMarkdown>
                     </div>
                 </div>
             </div>

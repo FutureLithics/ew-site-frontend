@@ -4,6 +4,7 @@ import { json } from "d3";
 
 import Choropleth from "./charts/choropleth";
 import Loader from "../Loader";
+import Selector from "../Shared/Selector";
 
 const KEYWORDS = [
     { name: "frostbite", color: "cold" },
@@ -16,22 +17,22 @@ const KEYWORDS = [
 
 const LEVELS = [
     {
-        display: "County",
-        name: "county",
+        title: "County",
+        value: "county",
         topoPath: "/datasets/counties-albers-10m.json",
     },
     {
-        display: "Place/Census",
-        name: "places",
+        title: "Place/Census",
+        value: "places",
         topoPath: "/datasets/places.json",
     },
 ];
 
 const TEMPERATURES = [
-    { display: "High Temperatures (Avg)", name: "hi_temp", color: "hot" },
+    { title: "High Temperatures (Avg)", value: "hi_temp", color: "hot" },
     {
-        display: "Low Temperatures (Avg)",
-        name: "low_temp",
+        title: "Low Temperatures (Avg)",
+        value: "low_temp",
         color: "cold",
         scaleReversed: true,
     },
@@ -91,18 +92,18 @@ const ChoroplethMap = ({ data }) => {
 
     const selectHandler = (e) => {
         const val = e.target.value;
-        const index = TEMPERATURES.findIndex((key) => key.name == val);
+        const index = TEMPERATURES.findIndex((key) => key.value == val);
 
         setScheme(TEMPERATURES[index]);
     };
 
     const selectLevelHandler = (e) => {
         const val = e.target.value;
-        const index = LEVELS.findIndex((key) => key.name == val);
+        const index = LEVELS.findIndex((key) => key.value == val);
 
-        if (LEVELS[index].name == "county") {
+        if (LEVELS[index].value == "county") {
             setDataset(countyData);
-        } else if (LEVELS[index].name == "places") {
+        } else if (LEVELS[index].value == "places") {
             setDataset(placeData);
         }
 
@@ -112,7 +113,7 @@ const ChoroplethMap = ({ data }) => {
 
     const renderMap = () => {
         Object.keys(dataset).map((key) =>
-            mapData.set(key, dataset[key][scheme.name]),
+            mapData.set(key, dataset[key][scheme.value]),
         );
 
         const options = {
@@ -163,44 +164,22 @@ const ChoroplethMap = ({ data }) => {
             <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
                 <div className="flex flex-col">
                     <h5 className="font-bold text-md mb-2">
-                        Showing {scheme.display} by {level.display}
+                        Showing {scheme.title} by {level.title}
                     </h5>
                 </div>
                 <div className="flex flex-col">
-                    <div className="flex justify-between mb-2">
-                        <span className="me-2 align-middle">Level:</span>
-                        <select
-                            onChange={selectLevelHandler}
-                            className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50"
-                        >
-                            {LEVELS.map((key) => {
-                                const val = key.name;
-                                return (
-                                    <option value={val} key={val}>
-                                        {key.display}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                        <span className="me-2 align-middle">
-                            Temperature average:
-                        </span>
-                        <select
-                            onChange={selectHandler}
-                            className="ps-4 shadow-md shadow-slate-200 border-radius-5 cursor-pointer hover:bg-slate-50"
-                        >
-                            {TEMPERATURES.map((key) => {
-                                const val = key.name;
-                                return (
-                                    <option value={val} key={val}>
-                                        {key.display}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
+                    <Selector
+                        handler={selectLevelHandler}
+                        collection={LEVELS}
+                        label="Level:"
+                        currentValue={level?.value}
+                    />
+                    <Selector
+                        handler={selectHandler}
+                        collection={TEMPERATURES}
+                        label="Temperature average:"
+                        currentValue={scheme?.value}
+                    />
                 </div>
             </div>
             {loading ? (

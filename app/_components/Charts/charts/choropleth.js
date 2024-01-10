@@ -58,7 +58,7 @@ export default class Choropleth {
     }
 
     setTopoJSON() {
-        if (this.options?.level?.name == "places") {
+        if (this.options?.level?.value == "places") {
             return topojson.feature(
                 this.usMap,
                 this.usMap.objects.simple_geojson,
@@ -71,7 +71,7 @@ export default class Choropleth {
     setGeoData() {
         this.featureIds = Object.keys(this.data);
         this.places = this.setTopoJSON();
-        if (this.options?.level?.name == "places") {
+        if (this.options?.level?.value == "places") {
             this.placemesh = topojson.mesh(
                 this.usMap,
                 this.usMap.objects.simple_geojson,
@@ -115,7 +115,7 @@ export default class Choropleth {
     }
 
     setPathFeature() {
-        if (this.options?.level?.name == "places") {
+        if (this.options?.level?.value == "places") {
             this.projection = d3
                 .geoAlbersUsa()
                 .fitSize([960, 600], this.places);
@@ -166,7 +166,7 @@ export default class Choropleth {
 
         this.entityLines = this.g.append("g");
 
-        if (this.options?.level?.name == "places") {
+        if (this.options?.level?.value == "places") {
             this.setPlacesEntityLines();
         } else {
             this.setCountyEntityLines();
@@ -200,7 +200,7 @@ export default class Choropleth {
             return "Not Available";
         }
 
-        if (this.options?.level?.name == "places") {
+        if (this.options?.level?.value == "places") {
             return keyword;
         } else {
             let max;

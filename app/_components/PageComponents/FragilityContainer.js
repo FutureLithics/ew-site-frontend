@@ -4,41 +4,23 @@ import { useEffect, useState } from "react";
 import { Slider } from "rsuite";
 import Loader from "../Loader";
 
+import Selector from "../Shared/Selector";
+
 import { fetchFragilityDataSet } from "@/app/utils/api";
 
 import LineChart from "../Charts/LineChart";
 import FragilityChoropleth from "../Charts/FragilityChoropleth";
 
-const DataSelector = ({ dataSets, index, setIndex }) => {
-    if (!dataSets) {
-        return;
-    }
-
-    return (
-        <div className="flex flex-inline my-2">
-            <h5 className="font-bold text-lg">Showing data for: </h5>
-            <select
-                onChange={(e) => setIndex(e.target.value)}
-                value={index}
-                className="font-extrabold"
-            >
-                {dataSets.map((d, i) => {
-                    const title = d.attributes.Title;
-
-                    return (
-                        <option key={`data-selector__${i}`} value={i}>
-                            {title}
-                        </option>
-                    );
-                })}
-            </select>
-        </div>
-    );
-};
-
 const MainComponent = ({ properties }) => {
-    const { keys, changeSliderPos, sliderPos, natlDataset, date, dataSlice, attributes } =
-        properties;
+    const {
+        keys,
+        changeSliderPos,
+        sliderPos,
+        natlDataset,
+        date,
+        dataSlice,
+        attributes,
+    } = properties;
 
     return (
         <div className="w-full px-2 sm:px-24 flex justify-center content-center">
@@ -163,6 +145,22 @@ const FragilityContainer = ({ collection, success }) => {
         }
     };
 
+    const dataSetsForOptions = (dataSet) => {
+        if (dataSet == null) {
+            return [];
+        }
+
+        return dataSet.map((d, i) => {
+            return { title: d.attributes?.Title, value: i };
+        });
+    };
+
+    const dataSetSelectHandler = (e) => {
+        const value = e.target.value;
+
+        setDataSetIndex(value);
+    };
+
     useEffect(() => {
         updateDataSet();
     }, [success, dataSetIndex]);
@@ -195,10 +193,12 @@ const FragilityContainer = ({ collection, success }) => {
                 <Loader />
             ) : (
                 <>
-                    <DataSelector
-                        dataSets={dataSets?.data}
-                        index={dataSetIndex}
-                        setIndex={setDataSetIndex}
+                    <Selector
+                        collection={dataSetsForOptions(dataSets?.data)}
+                        currentValue={dataSetIndex}
+                        handler={dataSetSelectHandler}
+                        label="Showing data for:"
+                        classes="flex justify-between mb-6"
                     />
                     <MainComponent
                         properties={{

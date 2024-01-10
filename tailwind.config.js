@@ -24,6 +24,9 @@ module.exports = {
             borderRadius: {
                 "4xl": "2rem",
             },
+            colors: {
+                baseGreen: "#3D6C62",
+            },
         },
     },
     plugins: [require("@tailwindcss/typography")],
