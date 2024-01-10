@@ -24,6 +24,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
     const [type, setType] = useState(TYPES[0].value);
     const [searchFilter, setSearchFilter] = useState("");
     const [currentPosts, setCurrentPosts] = useState([]);
+    const [total, setTotal] = useState(0);
 
     const taxonomyArray = () => {
         const taxArray = [{ title: "All Taxonomies", value: "all" }];
@@ -84,6 +85,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
         const res = await fetchBlogItems(limit, 0, filters);
 
         setCurrentPosts(res.data?.data);
+        setTotal(res.data.meta?.pagination?.total)
     };
 
     useEffect(() => {
@@ -103,6 +105,8 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
             });
 
             setCurrentPosts(currentPosts.concat(filteredPosts));
+
+            setTotal(initialData?.meta?.pagination?.total)
         }
     }, [initialData]);
 
@@ -149,7 +153,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
                 <div className="py-4">
                     <span className="font-extrabold">
                         Showing {currentPosts.length} out of{" "}
-                        {meta?.pagination?.total} posts
+                        {total} posts
                     </span>
                 </div>
             </div>
