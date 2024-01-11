@@ -134,8 +134,6 @@ export const fetchBlogItems = async (size = 6, offset = 0, filters = []) => {
         params += filter;
     });
 
-    console.log(params, filters);
-
     const url = `${baseURL}/api/posts?sort=createdAt:desc&${params}populate=deep`;
 
     try {
@@ -146,6 +144,19 @@ export const fetchBlogItems = async (size = 6, offset = 0, filters = []) => {
         return { success: false, error: err };
     }
 };
+
+export const fetchBlogBySlug = async (slug) => {
+    const url = `${baseURL}/api/posts?filters[Slug]=${slug}&populate=deep`;
+
+    try {
+        const res = await axios.get(url, config);
+        console.log(res.data);
+
+        return { success: true, data: res.data };
+    } catch (err) {
+        return { success: false, error: err };
+    } 
+}
 
 export const fetchTaxonomies = async (deep = false) => {
     const url = `${baseURL}/api/taxonomies?${deep ? "populate=deep" : ""}`;

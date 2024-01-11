@@ -40,12 +40,12 @@ const CardContent = ({attributes}) => {
 }
 
 const Card = ({ id, attributes }) => {
-    const { LinkURL } = attributes;
+    const { LinkURL, Slug } = attributes;
 
     if (LinkURL) {
         return <a href={LinkURL} target="_blank"><CardContent attributes={attributes} /></a>;
     } else {
-        return <Link href={`blog/${id}`}><CardContent attributes={attributes} /></Link>;
+        return <Link href={`blog/${Slug}`}><CardContent attributes={attributes} /></Link>;
     }
      
 };
