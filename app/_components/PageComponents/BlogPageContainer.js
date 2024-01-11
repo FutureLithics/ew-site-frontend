@@ -15,6 +15,29 @@ const TYPES = [
 
 const limit = 6;
 
+const Card = ({ id, attributes }) => {
+    const { FeaturedImage, Excerpt, Title } = attributes;
+    const { url, alternativeText } = FeaturedImage?.data?.attributes;
+
+    return (
+        <div className="card w-full rounded-lg shadow-md shadow-slate-300 ">
+            <div className="card-image relative w-full h-1/2 border-b-4 border-accentPurple overflow-hidden">
+                <img
+                    className="w-full h-full object-cover rounded-tl-lg rounded-tr-lg"
+                    src={url}
+                    alt={alternativeText}
+                />
+            </div>
+            <div className="card-section w-full h-1/2 p-4">
+                <h5 className="text-xl font-extrabold mb-2 text-center">
+                    {Title}
+                </h5>
+                <p className="text-md">{Excerpt}</p>
+            </div>
+        </div>
+    );
+};
+
 const BlogPageContainer = ({ initialData, taxonomies }) => {
     const { data, meta } = initialData;
     const [taxOptions, setTaxOptions] = useState([
@@ -52,8 +75,6 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
     };
 
     const searchHandler = () => {
-        console.log(`Searching for: ${searchFilter}`);
-
         refreshBlogItems();
     };
 
@@ -82,10 +103,10 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
         }
 
         setCurrentPosts([]);
-        const res = await fetchBlogItems(limit, 0, filters);
+        const res = await fetchBlogItems(limit, total, filters);
 
         setCurrentPosts(res.data?.data);
-        setTotal(res.data.meta?.pagination?.total)
+        setTotal(res.data.meta?.pagination?.total);
     };
 
     useEffect(() => {
@@ -106,7 +127,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
 
             setCurrentPosts(currentPosts.concat(filteredPosts));
 
-            setTotal(initialData?.meta?.pagination?.total)
+            setTotal(initialData?.meta?.pagination?.total);
         }
     }, [initialData]);
 
@@ -152,10 +173,19 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
             <div className="w-full">
                 <div className="py-4">
                     <span className="font-extrabold">
-                        Showing {currentPosts.length} out of{" "}
-                        {total} posts
+                        Showing {currentPosts.length} out of {total} posts
                     </span>
                 </div>
+            </div>
+            <div className="card-container w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-24">
+                {currentPosts.map((post) => {
+                    const id = post.id;
+                    const attributes = post.attributes;
+
+                    if (id && attributes) {
+                        return <Card id={id} attributes={attributes} />;
+                    }
+                })}
             </div>
         </>
     );
