@@ -19,4 +19,6 @@ const Blog = async () => {
     );
 };
 
+export const revalidate = 10;
+
 export default Blog;

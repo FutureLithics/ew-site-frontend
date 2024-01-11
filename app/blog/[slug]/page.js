@@ -17,4 +17,6 @@ const BlogPost = async ({params}) => {
     );
 };
 
+export const revalidate = 10;
+
 export default BlogPost;
