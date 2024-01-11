@@ -136,7 +136,7 @@ export const fetchBlogItems = async (size = 6, offset = 0, filters = []) => {
 
     console.log(params, filters);
 
-    const url = `${baseURL}/api/posts?${params}populate=deep`;
+    const url = `${baseURL}/api/posts?sort=createdAt:desc&${params}populate=deep`;
 
     try {
         const res = await axios.get(url, config);

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 import Selector from "../Shared/Selector";
 import { fetchBlogItems } from "@/app/utils/api";
@@ -15,7 +16,7 @@ const TYPES = [
 
 const limit = 6;
 
-const Card = ({ id, attributes }) => {
+const CardContent = ({attributes}) => {
     const { FeaturedImage, Excerpt, Title } = attributes;
     const { url, alternativeText } = FeaturedImage?.data?.attributes;
 
@@ -29,13 +30,24 @@ const Card = ({ id, attributes }) => {
                 />
             </div>
             <div className="card-section w-full h-1/2 p-4">
-                <h5 className="text-xl font-extrabold mb-2 text-center">
+                <h5 className="text-xl font-black mb-2 text-center">
                     {Title}
                 </h5>
                 <p className="text-md">{Excerpt}</p>
             </div>
         </div>
     );
+}
+
+const Card = ({ id, attributes }) => {
+    const { LinkURL } = attributes;
+
+    if (LinkURL) {
+        return <a href={LinkURL} target="_blank"><CardContent attributes={attributes} /></a>;
+    } else {
+        return <Link href={`blog/${id}`}><CardContent attributes={attributes} /></Link>;
+    }
+     
 };
 
 const BlogPageContainer = ({ initialData, taxonomies }) => {
@@ -103,11 +115,23 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
         }
 
         setCurrentPosts([]);
-        const res = await fetchBlogItems(limit, total, filters);
+        const res = await fetchBlogItems(limit, currentPosts.length, filters);
 
-        setCurrentPosts(res.data?.data);
-        setTotal(res.data.meta?.pagination?.total);
+        setAndMergePosts(res.data);
     };
+
+    const setAndMergePosts = (newData) => {
+        const ids = currentPosts.map((post) => post.id);
+        const filteredPosts = newData?.data.filter((post) => {
+            if (!ids.includes(post.id)) {
+                return post;
+            }
+        });
+
+        setCurrentPosts(currentPosts.concat(filteredPosts));
+
+        setTotal(initialData?.meta?.pagination?.total);
+    }
 
     useEffect(() => {
         if (taxonomies) {
@@ -118,16 +142,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
 
     useEffect(() => {
         if (initialData?.data) {
-            const ids = currentPosts.map((post) => post.id);
-            const filteredPosts = data.filter((post) => {
-                if (!ids.includes(post.id)) {
-                    return post;
-                }
-            });
-
-            setCurrentPosts(currentPosts.concat(filteredPosts));
-
-            setTotal(initialData?.meta?.pagination?.total);
+            setAndMergePosts(initialData);
         }
     }, [initialData]);
 
@@ -186,6 +201,17 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
                         return <Card id={id} attributes={attributes} />;
                     }
                 })}
+            </div>
+            <div className="w-full text-center mt-32">
+                {
+                    (currentPosts.length < total && total > 0) &&                 
+                    <button 
+                        className="py-2 px-4 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-black text-xl outline-none"
+                        onClick={() => refreshBlogItems()}
+                    >
+                            Load More
+                    </button>
+                }
             </div>
         </>
     );
