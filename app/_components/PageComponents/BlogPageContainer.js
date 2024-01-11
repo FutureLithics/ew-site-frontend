@@ -90,7 +90,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
         refreshBlogItems();
     };
 
-    const refreshBlogItems = async () => {
+    const refreshBlogItems = async (loadMore = false) => {
         const filters = [];
 
         if (type != "all") {
@@ -114,23 +114,25 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
             });
         }
 
-        setCurrentPosts([]);
-        const res = await fetchBlogItems(limit, currentPosts.length, filters);
+        const offset = loadMore ? currentPosts.length : 0;
+        const posts = loadMore ? currentPosts : [];
 
-        setAndMergePosts(res.data);
+        const res = await fetchBlogItems(limit, offset, filters);
+
+        setAndMergePosts(res.data, posts);
     };
 
-    const setAndMergePosts = (newData) => {
-        const ids = currentPosts.map((post) => post.id);
+    const setAndMergePosts = (newData, posts = []) => {
+        const ids = posts.map((post) => post.id);
         const filteredPosts = newData?.data.filter((post) => {
             if (!ids.includes(post.id)) {
                 return post;
             }
         });
 
-        setCurrentPosts(currentPosts.concat(filteredPosts));
+        setCurrentPosts(posts.concat(filteredPosts));
 
-        setTotal(initialData?.meta?.pagination?.total);
+        setTotal(newData?.meta?.pagination?.total);
     }
 
     useEffect(() => {
@@ -156,28 +158,28 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
         <>
             <div className="border-baseBlue border-b-2 w-full py-3">
                 <h6 className="font-extrabold pb-2">Content Filters</h6>
-                <div className="w-full flex justify-between">
-                    <div className="flex">
+                <div className="w-full flex flex-col sm:flex-row justify-between">
+                    <div className="flex flex-col sm:flex-row">
                         <Selector
                             collection={taxOptions}
                             currentValue={taxonomy}
                             handler={taxonomyHandler}
-                            classes="blog-page-filter pe-8"
+                            classes="blog-page-filter pe-8 my-1 sm:my-0"
                         />
                         <Selector
                             collection={TYPES}
                             currentValue={type}
                             handler={typeHandler}
-                            classes="blog-page-filter"
+                            classes="blog-page-filter my-1 sm:my-0"
                         />
                     </div>
-                    <div className="w-1/4 search-bar-filter inline-flex relative rounded shadow-sm shadow-baseBlue">
+                    <div className="w-full my-1 sm:my-0 sm:w-1/4 search-bar-filter inline-flex relative rounded shadow-sm shadow-baseBlue">
                         <input
                             className="w-full h-full px-2 bg-slate-50 rounded hover:bg-slate-100 outline-0"
                             onChange={(e) => setSearchFilter(e.target.value)}
                         />
                         <button
-                            className="h-full px-2 flex rounded-tr rounded-br justify-center content-center bg-slate-200 hover:bg-slate-300"
+                            className="min-h-full px-2 flex rounded-tr rounded-br justify-center content-center bg-slate-200 hover:bg-slate-300"
                             onClick={searchHandler}
                         >
                             <MagnifyingGlassIcon className="w-4 h-4 baseBlue self-center" />
@@ -207,7 +209,7 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
                     (currentPosts.length < total && total > 0) &&                 
                     <button 
                         className="py-2 px-4 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-black text-xl outline-none"
-                        onClick={() => refreshBlogItems()}
+                        onClick={() => refreshBlogItems(true)}
                     >
                             Load More
                     </button>
