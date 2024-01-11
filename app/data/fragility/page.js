@@ -1,11 +1,18 @@
+import { Suspense } from "react";
+import FragilityContext from "../../_components/PageComponents/FragilityContext";
+import "rsuite/dist/rsuite-no-reset.min.css";
+import Loader from "@/app/_components/Loader";
+
 const Fragility = async () => {
-  return (
-    <main className="w-screen flex min-h-screen flex-col items-center justify-between p-24">
-      <p>
-        This Page will render a visualization charting microeconomic fragility.
-      </p>
-    </main>
-  );
+    return (
+        <Suspense fallback={<Loader />}>
+            <main className="data-charts w-screen flex min-h-screen flex-col items-center p-4">
+                <FragilityContext />
+            </main>
+        </Suspense>
+    );
 };
+
+export const revalidate = 10;
 
 export default Fragility;

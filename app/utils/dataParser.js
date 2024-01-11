@@ -146,3 +146,61 @@ export const dataByCounty = (data) => {
 
   return countyData;
 };
+
+export const processFragilityData = (data, definitions) => {
+    // create three arrays:
+    // 1. Can just use Object.keys countyData for slider
+    // 2. One that contains the monthly data by county
+    // 3. Array with year data for national avg by month (Line Chart)
+    const slices = processFragilitySliderData(data);
+
+    const countyData = slices
+        .slice(0, slices.length - 1)
+        .reduce((obj, item) => {
+            if ([item] != undefined) {
+                return { ...obj, [item]: {} };
+            }
+        }, {});
+
+    const natlData = {};
+
+    data.map((d) => {
+        processFragilityDataByCounty(d, countyData, definitions);
+        processFragilityDataByNatl(d, natlData, definitions);
+    });
+
+    return {
+        countyData,
+        natlData,
+    };
+};
+
+const processFragilitySliderData = (data) => {
+    return [...new Set(data.map((d) => d.period))];
+};
+
+const processFragilityDataByCounty = (d, object, definitions) => {
+    if (d.state_fips_code && d.county_fips_code && d.period) {
+        const code = String(d.state_fips_code) + String(d.county_fips_code);
+        const period = object[d.period];
+
+        if (period) {
+            object[d.period][code] = {
+                [definitions.Variable]: d[definitions.Variable],
+                [definitions.Average]: d[definitions.Average],
+            };
+        }
+    }
+};
+
+const processFragilityDataByNatl = (d, object, definitions) => {
+    if (d.period) {
+        // the national averages will be the same for a period across counties
+        // we don't need to perform more operations than necessary.
+        if (object[d.period] == null) {
+            object[d.period] = {
+                [definitions.Average]: d[definitions.Average],
+            };
+        }
+    }
+};

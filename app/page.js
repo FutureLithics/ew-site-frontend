@@ -1,5 +1,5 @@
 import { fetchPageData } from "./utils/api";
-import FrontPageWidget from "./_components/FrontPageWidget";
+import FrontPageWidget from "./_components/PageComponents/FrontPageWidget";
 import { notFound } from "next/navigation";
 
 const Home = async () => {

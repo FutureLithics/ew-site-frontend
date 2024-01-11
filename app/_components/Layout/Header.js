@@ -4,16 +4,20 @@ import Navigation from "../Navigation/Navigation";
 import MobileNavigation from "../Navigation/MobileNavigation";
 
 const dataNavigationElements = [
-  { link: "/data/temperature", name: "Climate", subMenu: false },
-  { link: "/data/fragility", name: "Fragility", subMenu: false },
-  { link: "/data/networks", name: "Social Network", subMenu: false },
+    { link: "/data/temperature", name: "Climate", subMenu: false },
+    { link: "/data/fragility", name: "Fragility", subMenu: false },
+    { link: "/data/housing", name: "Housing", subMenu: false },
 ];
 
 const navigationElements = [
-  { link: "/", name: "CV & Contact", subMenu: false },
-  { link: "/data/temperature", name: "Data", subMenu: dataNavigationElements },
-  { link: "/research", name: "Research", subMenu: false },
-  { link: "/blog", name: "In the News", subMenu: false },
+    { link: "/", name: "CV & Contact", subMenu: false },
+    {
+        link: "/data/temperature",
+        name: "Data",
+        subMenu: dataNavigationElements,
+    },
+    { link: "/research", name: "Research", subMenu: false },
+    { link: "/blog", name: "Identity in Finance", subMenu: false },
 ];
 
 const Header = () => {
