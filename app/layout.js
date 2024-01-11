@@ -3,8 +3,8 @@ import Header from "./_components/Layout/Header";
 import Footer from "./_components/Layout/Footer";
 
 export const metadata = {
-    title: "Emily Williams - Household Finance",
-    description: "The personal site for academic researcher Emily Williams.",
+  title: "Emily Williams - Household Finance",
+  description: "The personal site for academic researcher Emily Williams.",
 };
 
 export default function RootLayout({ children }) {

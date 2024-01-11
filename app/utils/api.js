@@ -18,41 +18,36 @@ const config = {
 };
 
 export const fetchPageData = async (id = 1) => {
-    const url = `${baseURL}/api/pages/${id}?populate=deep`;
+  const url = `${baseURL}/api/pages/${id}?populate=deep`;
 
-    try {
-        const response = await axios.get(url);
+  try {
+    const response = await axios.get(url);
 
-        return processPageContent(response.data);
-    } catch (err) {
-        return { succes: false, error: err };
-    }
+    return processPageContent(response.data);
+  } catch (err) {
+    return { succes: false, error: err };
+  }
 };
 
-// Climate, Temperature, and Keyword Data
-
 export const fetchDataSet = async (id = 1) => {
-    const url = `${baseURL}/api/data-sets/${id}?populate=deep`;
+  const url = `${baseURL}/api/data-sets/${id}?populate=deep`;
 
-    try {
-        const response = await axios.get(url, config);
+  try {
+    const response = await axios.get(url, config);
 
-        return await processDataSet(response.data);
-    } catch (err) {
-        return { succes: false, error: err };
-    }
+    return await processDataSet(response.data);
+  } catch (err) {
+    return { succes: false, error: err };
+  }
 };
 
 const processPageContent = (data) => {
-    const content = data?.data?.attributes?.PageContent;
-    if (content) {
-        return { success: true, content };
-    } else {
-        return {
-            success: false,
-            content: "There was an error parsing content.",
-        };
-    }
+  const content = data?.data?.attributes?.PageContent;
+  if (content) {
+    return { success: true, content };
+  } else {
+    return { success: false, content: "There was an error parsing content." };
+  }
 };
 
 const processDataSet = async (data, type = "climate", definitions = null) => {
