@@ -8,13 +8,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-    return (
-        <html lang="en">
-            <body className={"body min-h-screen relative pb-60"}>
-                <Header />
-                {children}
-                <Footer />
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={"body min-h-screen relative pb-60"}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
 }
