@@ -164,3 +164,37 @@ export const fetchTaxonomies = async (deep = false) => {
         return { success: false, error: err };
     }
 };
+
+export const fetchPostsByTaxonomySlug = async (slug, size = 6, offset = 0, search = []) => {
+    const limit = `pagination[limit]=${size}&`;
+    const start = `pagination[start]=${offset}&`;
+    const taxonomy = `filters[Taxonomies][Slug][$eqi]=${slug}&`
+
+    let params = `${limit}${start}${taxonomy}`;
+
+    search.map((s) => {
+        params +=  `filters[${s.key}][${s.operator}]=${s.value}&`;
+    });
+
+    const url = `${baseURL}/api/posts?sort=createdAt:desc&${params}populate=deep`;
+
+    try {
+        const res = await axios.get(url, config);
+
+        return { success: true, data: res.data };
+    } catch (err) {
+        return { success: false, error: err };
+    }
+}
+
+export const fetchTaxonomyBySlug = async (slug) => {
+    const url = `${baseURL}/api/taxonomies?filters[Slug]=${slug}`;
+
+    try {
+        const res = await axios.get(url, config);
+
+        return { success: true, data: res.data };
+    } catch (err) {
+        return { success: false, error: err };
+    }
+}
