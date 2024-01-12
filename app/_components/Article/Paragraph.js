@@ -1,10 +1,11 @@
 const Paragraph = ({ component }) => {
   const { Heading, Image, Imageright, MainBody, ImageCaption } = component;
-  const { url, alternativeText } = Image?.data?.attributes;
+  const url = Image?.data?.attributes?.url;
+  const alternativeText= Image?.data?.attributes?.alternativeText;
 
   const imageClasses =
     (Imageright ? " sm:float-right " : " sm:float-left ") +
-    (Image ? " block " : " none ");
+    (Image && url ? " block " : " hidden ");
   const imageMargin = Imageright ? " sm:ms-4 " : " sm:me-4";
 
   return (
