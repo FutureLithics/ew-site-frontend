@@ -20,7 +20,7 @@ const TaxonomyList = async () => {
               <li key={`taxonomy-widget-item-${i}`}>
                 <Link
                   href={`/blog/taxonomy/${Slug}`}
-                  className="hover:text-amber-300"
+                  className="hover:text-amber-300 text-lg"
                 >
                   {Title}
                 </Link>
