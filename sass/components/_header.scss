@@ -23,20 +23,22 @@ nav {
     li {
       a {
         &:hover {
-          transition: all 100ms ease-in-out;
-          color: grey;
+          transition: all 350ms ease-in-out;
+          @apply text-amber-500;
         }
 
         &.active:not(.sub-menu-item) {
-          border-bottom: 1px solid lightgray;
+          @apply text-baseBlue;
+          @apply border-b;
+          @apply border-accentPurple;
         }
 
         &.sub-menu-item.active {
-          color: darkslateblue;
+          @apply text-baseBlue;
 
           &:hover {
-            transition: all 100ms ease-in-out;
-            color: grey;
+            transition: all 350ms ease-in-out;
+            @apply text-amber-500;
           }
         }
       }
