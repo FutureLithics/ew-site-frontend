@@ -15,7 +15,7 @@ const BlogPost = async ({ params }) => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <main className="w-screen flex min-h-screen flex-col items-center py-8 px-24">
+      <main className="w-screen flex min-h-screen flex-col items-center py-8 px-12 md:px-24">
         <ArticleComponent data={data} />
       </main>
     </Suspense>
