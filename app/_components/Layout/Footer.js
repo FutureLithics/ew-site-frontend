@@ -2,27 +2,35 @@ import TaxonomyList from "./widgets/TaxonomyList";
 
 const Footer = () => {
   return (
-    <div className="mt-8">
-      <div className="absolute bottom-0 bg-baseGreen w-screen text-white grid grid-cols-1 md:grid-cols-3">
-        <div className="p-4 flex justify-center md:justify-start sm:my-8 sm:mx-3">
-			<div>
-				<h2 className="font-serif font-extrabold content-center text-xl">
-					Emily Williams
-				</h2>
-				<p className="font-bold content-center text-lg">Household Finance</p>				
+    <div className="absolute bottom-0 bg-baseGreen w-screen text-white mt-8">
+		<div className="grid grid-cols-1 md:grid-cols-3">
+			<div className="p-4 flex justify-center md:justify-start sm:my-8 sm:mx-3">
+				<div>
+					<h2 className="font-serif font-extrabold content-center text-2xl">
+						Emily Williams
+					</h2>
+					<p className="font-bold content-center text-lg">Household Finance</p>				
+				</div>
 			</div>
-        </div>
-        <div className="p-4 flex justify-center sm:mx-3 sm:my-8">
-			<div>
-		          <TaxonomyList />				
+			<div className="p-4 flex justify-center sm:mx-3 sm:my-8">
+				<div>
+					<TaxonomyList />				
+				</div>
 			</div>
-        </div>
-        <div className="p-4 flex justify-center sm:mx-3 sm:my-8">
-			<div>
+			<div className="p-4 flex justify-center sm:mx-3 sm:my-8">
+				<div>
 
+				</div>
 			</div>
 		</div>
-      </div>
+		<div className="w-full text-end px-4 py-2 text-sm">
+			<p>Site powered by: 
+				<a 
+					href="https://futurelithics.com" 
+					target="_blank"
+					className="ps-2 text-amber-200 hover:text-amber-300"
+					>Future Lithics LLC</a></p>
+		</div>
     </div>
   );
 };
