@@ -9,7 +9,7 @@ const Blog = async () => {
   const taxResponse = await fetchTaxonomies();
   return (
     <Suspense fallback={<Loader />}>
-      <main className="w-screen flex min-h-screen flex-col items-center py-8 px-24">
+      <main className="w-screen flex min-h-screen flex-col items-center py-8 px-12 sm:px-24">
         <BlogPageContainer
           initialData={blogResponse.data}
           taxonomies={taxResponse.data}
