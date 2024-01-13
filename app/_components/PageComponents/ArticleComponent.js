@@ -53,16 +53,16 @@ const returnCorrectComponent = (component) => {
 };
 
 const ArticleComponent = async ({ data }) => {
-    const { ArticleComponent } = data.data[0]?.attributes;
+  const { ArticleComponent } = data.data[0]?.attributes;
 
-    return (
-        <article className="w-full">
-        <ArticleHeader attributes={data.data[0]?.attributes} />
-        {ArticleComponent.map((component) => {
-            return returnCorrectComponent(component);
-        })}
-        </article>
-    );
+  return (
+    <article className="w-full">
+      <ArticleHeader attributes={data.data[0]?.attributes} />
+      {ArticleComponent.map((component) => {
+        return returnCorrectComponent(component);
+      })}
+    </article>
+  );
 };
 
 export default ArticleComponent;

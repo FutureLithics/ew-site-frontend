@@ -1,7 +1,7 @@
 import { fetchBlogBySlug } from "../../utils/api";
 import { Suspense } from "react";
 import Loader from "@/app/_components/Loader";
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
 
 import ArticleComponent from "@/app/_components/PageComponents/ArticleComponent";
 
