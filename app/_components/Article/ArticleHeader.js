@@ -26,7 +26,7 @@ const ArticleHeader = ({ attributes }) => {
       </div>
       <div className="w-full md:w-2/3 grow h-full meta-text px-0 md:px-8 flex justify-center items-center">
         <div className="min-w-none md:w-2/3 prose text-center sm:text-start md:text-center flex flex-col-reverse md:flex-col">
-          <div className="font-extrabold sm:text-2xl my-4 sm:mt-0">
+          <div className="font-extrabold sm:text-xl my-4 sm:mt-0">
             {Excerpt}
           </div>
           <div>

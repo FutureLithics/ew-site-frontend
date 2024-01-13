@@ -1,8 +1,6 @@
 const LinkList = ({ component }) => {
   const { Links, Heading } = component;
 
-  console.log(component, "LinkList");
-
   return (
     <div className="link-list w-full my-16 prose">
       <h4 className="w-full text-center sm:text-start text-2xl mb-4 font-extrabold">

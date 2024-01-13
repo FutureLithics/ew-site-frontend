@@ -1,7 +1,7 @@
 const Paragraph = ({ component }) => {
   const { Heading, Image, Imageright, MainBody, ImageCaption } = component;
   const url = Image?.data?.attributes?.url;
-  const alternativeText= Image?.data?.attributes?.alternativeText;
+  const alternativeText = Image?.data?.attributes?.alternativeText;
 
   const imageClasses =
     (Imageright ? " sm:float-right " : " sm:float-left ") +
@@ -9,7 +9,7 @@ const Paragraph = ({ component }) => {
   const imageMargin = Imageright ? " sm:ms-4 " : " sm:me-4";
 
   return (
-    <div className="paragraph-text-component w-full my-8">
+    <div className="paragraph-text-component w-full my-16">
       <h4 className="text-center sm:text-start text-2xl mb-4 sm:mb-1  font-extrabold">
         {Heading}
       </h4>

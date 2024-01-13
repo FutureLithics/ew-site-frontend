@@ -23,7 +23,6 @@ const CardContent = ({ attributes }) => {
 
 const Card = ({ attributes }) => {
   const { LinkURL, Slug } = attributes;
-  console.log(Slug);
 
   if (LinkURL) {
     return (
