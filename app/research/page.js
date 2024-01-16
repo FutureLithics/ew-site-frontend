@@ -14,4 +14,6 @@ const Research = async () => {
   );
 };
 
+export const revalidate = 10;
+
 export default Research;
