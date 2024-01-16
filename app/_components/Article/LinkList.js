@@ -1,8 +1,8 @@
-const LinkList = ({ component }) => {
+const LinkList = ({ component, classes = "w-full my-16" }) => {
   const { Links, Heading } = component;
 
   return (
-    <div className="link-list w-full my-16 prose">
+    <div className={`link-list ${classes} prose`}>
       <h4 className="w-full text-center sm:text-start text-2xl mb-4 font-extrabold">
         {Heading}
       </h4>

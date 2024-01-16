@@ -126,3 +126,13 @@ html {
     @apply text-amber-500 hover:text-amber-600;
   }
 }
+
+.link-list {
+  a {
+    @apply text-amber-700 hover:text-amber-600 transition-all ease-in-out duration-500;
+  }
+
+  ::marker {
+    @apply text-baseBlue;
+  }
+}
