@@ -3,6 +3,11 @@ import { Suspense } from "react";
 import Loader from "@/app/_components/Loader";
 import BlogPageContainer from "../_components/PageComponents/BlogPageContainer";
 
+export const metadata = {
+    title: "Identity in Finance | Emily Williams - Household Finance",
+    description: `A blog that explores and provides insights into correlations between identity and finance.`,
+  };
+
 const Blog = async () => {
   // sets initial, default blog items
   const blogResponse = await fetchBlogItems();

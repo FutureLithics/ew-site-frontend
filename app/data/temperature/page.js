@@ -1,6 +1,12 @@
 import { fetchDataSet } from "../../utils/api";
 import ChoroplethMap from "../../_components/Charts/ChoroplethMap";
 
+export const metadata = {
+  title: "Climate Analysis | Emily Williams - Household Finance",
+  description: `A data visualization that enables analysis of keywords associated with
+                extreme temperatures by Place and County`,
+};
+
 const Data = async () => {
   const data = await fetchDataSet();
 

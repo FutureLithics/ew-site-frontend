@@ -3,6 +3,12 @@ import FragilityContext from "../../_components/PageComponents/FragilityContext"
 import "rsuite/dist/rsuite-no-reset.min.css";
 import Loader from "@/app/_components/Loader";
 
+export const metadata = {
+  title: "Fragility | Emily Williams - Household Finance",
+  description: `A data visualization that enables analysis of income over time which 
+                provides insights into household fragility`,
+};
+
 const Fragility = async () => {
   return (
     <Suspense fallback={<Loader />}>
