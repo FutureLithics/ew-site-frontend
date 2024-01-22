@@ -136,3 +136,36 @@ html {
     @apply text-baseBlue;
   }
 }
+
+.collapsible {
+  .content {
+    transition: max-height 0.5s ease-out;
+    max-height: 3rem;
+    padding: 0.25em 0.5em;
+    box-shadow: 0.15em rgba(0, 0, 0, 0.05);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.02),
+      rgba(255, 255, 255, 0)
+    );
+    border-radius: 5px;
+
+    &.expanded {
+      transition: max-height 0.7s ease-in;
+      max-height: 1000px;
+    }
+  }
+
+  .collapse-toggle {
+    transition: all 0.5s ease-in-out;
+
+    &:hover {
+      svg {
+        transition: all 0.5s ease-in-out;
+        @apply text-amber-400;
+      }
+
+      @apply text-amber-400;
+    }
+  }
+}

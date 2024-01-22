@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import PostsContainer from "../Shared/PostsContainer";
 import Selector from "../Shared/Selector";
 import Search from "../Shared/Search";
+import Collapsible from "../Shared/Collapsible";
 
 import { fetchBlogItems } from "@/app/utils/api";
 
@@ -17,7 +18,7 @@ const TYPES = [
 
 const limit = 6;
 
-const BlogPageContainer = ({ initialData, taxonomies }) => {
+const BlogPageContainer = ({ content, initialData, taxonomies }) => {
   const { data, meta } = initialData;
   const [taxOptions, setTaxOptions] = useState([
     { title: "All Taxonomies", value: "all" },
@@ -119,10 +120,9 @@ const BlogPageContainer = ({ initialData, taxonomies }) => {
     refreshBlogItems();
   }, [type, taxonomy]);
 
-  console.log(currentPosts);
-
   return (
     <>
+      <div>{content.length > 0 && <Collapsible content={content[0]} />}</div>
       <div className="border-baseBlue border-b-2 w-full py-3">
         <h6 className="font-extrabold pb-2">Content Filters</h6>
         <div className="w-full flex flex-col sm:flex-row justify-between">
