@@ -16,7 +16,9 @@ const PostsContainer = ({ posts, total, loadHandler }) => {
           const attributes = post.attributes;
 
           if (id && attributes) {
-            return <Card id={id} attributes={attributes} />;
+            return (
+              <Card id={id} attributes={attributes} key={`article-${id}`} />
+            );
           }
         })}
       </div>
