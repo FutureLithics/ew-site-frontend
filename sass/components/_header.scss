@@ -20,6 +20,7 @@
 
 nav {
   ul {
+
     li {
       a {
         &:hover {
@@ -49,6 +50,7 @@ nav {
 
       &.absolute {
         border-radius: 5%;
+        z-index: 100000
       }
     }
   }
