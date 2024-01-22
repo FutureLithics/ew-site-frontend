@@ -7,7 +7,7 @@ const TaxonomyList = async () => {
 
   return (
     <div>
-      <div className="w-48 border-b border-white mb-4">
+      <div className="w-48 border-b-2 border-accentPurple mb-4">
         <h4 className="font-extrabold content-center text-xl">Topics</h4>
       </div>
 
@@ -20,7 +20,7 @@ const TaxonomyList = async () => {
               <li key={`taxonomy-widget-item-${i}`}>
                 <Link
                   href={`/blog/taxonomy/${Slug}`}
-                  className="hover:text-amber-300 text-lg"
+                  className="hover:text-amber-400 text-lg"
                 >
                   {Title}
                 </Link>
