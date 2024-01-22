@@ -5,6 +5,21 @@ import { notFound } from "next/navigation";
 
 import ArticleComponent from "@/app/_components/PageComponents/ArticleComponent";
 
+export async function generateMetadata({ params, searchParams }, parent) {
+    // read route params
+    const res = await fetchBlogBySlug(params.slug);
+    const data = res.data?.data[0];
+   
+    // optionally access and extend (rather than replace) parent metadata
+    const previousImages = (await parent).openGraph?.images || []
+   
+    return {
+      title: data.attributes?.Title,
+      description: data.attributes?.Excerpt
+    }
+  }
+   
+
 const BlogPost = async ({ params }) => {
   const res = await fetchBlogBySlug(params.slug);
   const data = res.data;

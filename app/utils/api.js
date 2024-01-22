@@ -43,8 +43,9 @@ export const fetchDataSet = async (id = 1) => {
 
 const processPageContent = (data) => {
   const content = data?.data?.attributes?.PageContent;
+  const title = data?.data?.attributes?.Title;
   if (content) {
-    return { success: true, content };
+    return { success: true, content, title };
   } else {
     return { success: false, content: "There was an error parsing content." };
   }

@@ -1,6 +1,11 @@
 import { fetchPageData } from "../utils/api";
 import LinkList from "../_components/Article/LinkList";
 
+export const metadata = {
+  title: "Research | Emily Williams - Household Finance",
+  description: "A page referencing research that is both published and in progress.",
+}; 
+
 const Research = async () => {
   const res = await fetchPageData(2);
 
