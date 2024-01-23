@@ -17,4 +17,6 @@ const Data = async () => {
   );
 };
 
+export const revalidate = 10;
+
 export default Data;
