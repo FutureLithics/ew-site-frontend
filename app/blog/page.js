@@ -17,11 +17,15 @@ const Blog = async () => {
   return (
     <Suspense fallback={<Loader />}>
       <main className="w-screen flex min-h-screen flex-col items-center py-8 px-12 sm:px-24">
+        <p>Coming Soon!</p>
+        {/* the component
         <BlogPageContainer
           content={pageData.content}
           initialData={blogResponse.data}
           taxonomies={taxResponse.data}
         />
+        */}
+
       </main>
     </Suspense>
   );
