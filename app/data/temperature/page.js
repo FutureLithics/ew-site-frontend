@@ -1,5 +1,6 @@
 import { fetchDataSet } from "../../utils/api";
 import ChoroplethMap from "../../_components/Charts/ChoroplethMap";
+import Popup from "@/app/_components/Shared/Popup";
 
 export const metadata = {
   title: "Climate Analysis | Emily Williams - Household Finance",

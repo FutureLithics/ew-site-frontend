@@ -5,6 +5,7 @@ import { json } from "d3";
 import Choropleth from "./charts/choropleth";
 import Loader from "../Loader";
 import Selector from "../Shared/Selector";
+import Popup from "../Shared/Popup";
 
 const KEYWORDS = [
   { name: "frostbite", color: "cold" },
@@ -76,7 +77,9 @@ const PopulatedMap = ({ reference, fullScreen, fullScreenToggle }) => {
 };
 
 const ChoroplethMap = ({ data }) => {
-  const { countyData, placeData } = data?.data;
+  const { countyData, placeData, methodology } = data?.data;
+
+  console.log(data, "data");
 
   const mapData = new Map();
   const ref = useRef();
@@ -166,6 +169,13 @@ const ChoroplethMap = ({ data }) => {
           <h5 className="font-bold text-md mb-2">
             Showing {scheme.title} by {level.title}
           </h5>
+          <div className="my-2">
+            <Popup
+              title="Methodology"
+              buttonText={"Methodology"}
+              content={methodology}
+            />
+          </div>
         </div>
         <div className="flex flex-col">
           <Selector
