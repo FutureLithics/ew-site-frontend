@@ -79,7 +79,7 @@ const ChoroplethMap = ({ data, attributes }) => {
         <div
           id="choropleth-fragility"
           ref={ref}
-          className={`bg-slate-400 p-8 rounded flex content-center`}
+          className={`bg-slate-50 p-8 rounded flex content-center`}
         ></div>
       )}
     </div>
