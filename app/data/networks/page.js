@@ -6,9 +6,7 @@ export const metadata = {
 const Network = async () => {
   return (
     <main className="w-screen flex min-h-screen flex-col items-center justify-between p-24">
-      <p>
-        Coming soon!
-      </p>
+      <p className="my-8 text-2xl">Coming Soon!</p>
     </main>
   );
 };

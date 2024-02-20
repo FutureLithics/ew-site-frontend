@@ -123,6 +123,8 @@ const BlogPageContainer = ({ content, initialData, taxonomies }) => {
   return (
     <>
       <div>{content.length > 0 && <Collapsible content={content[0]} />}</div>
+      <p className="my-8 text-2xl">Coming Soon!</p>
+      {/*
       <div className="border-baseBlue border-b-2 w-full py-3">
         <h6 className="font-extrabold pb-2">Content Filters</h6>
         <div className="w-full flex flex-col sm:flex-row justify-between">
@@ -151,6 +153,7 @@ const BlogPageContainer = ({ content, initialData, taxonomies }) => {
         total={total}
         loadHandler={refreshBlogItems}
       />
+      */}
     </>
   );
 };

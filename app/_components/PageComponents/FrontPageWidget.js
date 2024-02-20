@@ -57,8 +57,8 @@ const FrontPageWidget = ({ content }) => {
 
   const contactSections = [
     { key: "email", Icon: EnvelopeIcon, text: content.Email },
-    { key: "phone", Icon: PhoneIcon, text: content.Phone },
-    { key: "location", Icon: MapPinIcon, text: content.Location },
+    //{ key: "phone", Icon: PhoneIcon, text: content.Phone },
+    //{ key: "location", Icon: MapPinIcon, text: content.Location },
     {
       key: "cv-resume",
       Icon: DocumentArrowDownIcon,
