@@ -66,6 +66,7 @@ const processDataSet = async (data, type = "climate", definitions = null) => {
         stateData: dataByState(csv),
         countyData: dataByCounty(csv),
         placeData: dataByPlace(csv),
+        methodology: data.data?.attributes?.Methodology,
       };
 
       return { success: true, data: dataSet };
