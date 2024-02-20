@@ -29,11 +29,16 @@
   }
 
   p {
-    margin-bottom: 0.75rem;
+    margin: 0.75rem 0;
   }
 
   strong {
     font-weight: theme("fontWeight.extrabold");
     color: black;
+  }
+
+  ol {
+    margin-left: 1rem;
+    list-style: decimal;
   }
 }
