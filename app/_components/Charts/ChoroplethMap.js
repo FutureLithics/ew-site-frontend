@@ -169,7 +169,7 @@ const ChoroplethMap = ({ data }) => {
           <h5 className="font-bold text-md mb-2">
             Showing {scheme.title} by {level.title}
           </h5>
-          <div className="my-2">
+          <div className="mb-2">
             <Popup
               title="Methodology"
               buttonText={"Methodology"}

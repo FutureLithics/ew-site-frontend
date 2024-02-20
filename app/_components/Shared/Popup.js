@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const Popup = ({ title, buttonText, content }) => {
   const [toggle, setToggle] = useState(false);
@@ -8,7 +10,7 @@ const Popup = ({ title, buttonText, content }) => {
     <div>
       <button
         onClick={() => setToggle(true)}
-        className="block text-white focus:ring-4 focus:outline-none rounded-lg text-md font-bold px-5 py-2.5 text-center bg-slate-400 hover:bg-slate-500 dark:focus:none"
+        className="blockfocus:outline-none rounded-lg text-md font-bold px-4 py-1 shadow-sm shadow-baseBlue cursor-pointer bg-slate-50 hover:bg-slate-100"
         type="button"
       >
         {buttonText}
@@ -20,13 +22,13 @@ const Popup = ({ title, buttonText, content }) => {
           toggle ? "flex" : "hidden"
         } overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0 bg-slate-600 bg-opacity-50`}
       >
-        <div className="relative w-full max-w-md max-h-full opacity-100 text-slate-700">
-          <div className="relative rounded-lg shadow bg-slate-200">
+        <div className="relative w-full max-w-xl max-h-full opacity-100 text-slate-700">
+          <div className="relative rounded-lg shadow bg-slate-100">
             <div className="p-2 border-b-2 border-slate-300 flex justify-between items-center px-4 text-lg">
               <div>{title}</div>
               <button
                 type="button"
-                className=" text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg w-8 h-8 ms-auto inline-flex justify-center items-center"
+                className=" text-slate-700 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg w-8 h-8 ms-auto inline-flex justify-center items-center"
                 onClick={() => setToggle(false)}
               >
                 <svg
@@ -48,7 +50,11 @@ const Popup = ({ title, buttonText, content }) => {
               </button>
             </div>
 
-            <div className="p-4 md:p-5">{content}</div>
+            <div className="p-4 md:p-5">
+                <ReactMarkdown className="rich-text" rehypePlugins={[rehypeRaw]}>
+                    {content}
+                </ReactMarkdown>
+            </div>
           </div>
         </div>
       </div>
