@@ -15,7 +15,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="p-4 flex justify-center sm:mx-3 sm:my-8">
-          <div>
+          <div className="hidden">
             <TaxonomyList />
           </div>
         </div>
