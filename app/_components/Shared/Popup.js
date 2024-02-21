@@ -3,18 +3,17 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
+
 const Popup = ({ title, buttonText, content }) => {
   const [toggle, setToggle] = useState(false);
 
   return (
     <div>
-      <button
+      <QuestionMarkCircleIcon 
         onClick={() => setToggle(true)}
-        className="blockfocus:outline-none rounded-lg text-md font-bold px-4 py-1 shadow-sm shadow-baseBlue cursor-pointer bg-slate-50 hover:bg-slate-100"
-        type="button"
-      >
-        {buttonText}
-      </button>
+        className="w-4 h-4 text-accentPurple cursor-pointer"
+      />
 
       <div
         id="popup-modal"

@@ -22,11 +22,13 @@ const LEVELS = [
     value: "county",
     topoPath: "/datasets/counties-albers-10m.json",
   },
+  /*
   {
     title: "Place/Census",
     value: "places",
     topoPath: "/datasets/places.json",
   },
+  */
 ];
 
 const TEMPERATURES = [
@@ -165,25 +167,28 @@ const ChoroplethMap = ({ data }) => {
   return (
     <div className="flex flex-col w-full">
       <div className="w-full border-b-2 mb-4 flex flex-wrap content-between justify-between">
-        <div className="flex flex-col">
-          <h5 className="font-bold text-md mb-2">
+        <div className="flex flex-row justify-start">
+          <h5 className="font-bold text-md mb-2 me-2">
             Showing {scheme.title} by {level.title}
           </h5>
-          <div className="mb-2">
             <Popup
               title="Methodology"
               buttonText={"Methodology"}
               content={methodology}
             />
-          </div>
         </div>
         <div className="flex flex-col">
+          {
+          /* temporarily disabled
           <Selector
             handler={selectLevelHandler}
             collection={LEVELS}
             label="Level:"
             currentValue={level?.value}
-          />
+          /> 
+          */           
+          }
+
           <Selector
             handler={selectHandler}
             collection={TEMPERATURES}

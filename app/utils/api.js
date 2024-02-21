@@ -53,6 +53,7 @@ const processPageContent = (data) => {
 
 const processDataSet = async (data, type = "climate", definitions = null) => {
   const url = data.data?.attributes?.DataSet?.DataSet?.data?.attributes?.url;
+  const methodology = data.data?.attributes?.Methodology;
 
   try {
     const csv = await fileParser(url);
@@ -60,13 +61,13 @@ const processDataSet = async (data, type = "climate", definitions = null) => {
     if (type == "fragility") {
       const data = processFragilityData(csv, definitions);
 
-      return { success: true, data };
+      return { success: true, data, methodology: methodology };
     } else {
       const dataSet = {
         stateData: dataByState(csv),
         countyData: dataByCounty(csv),
         placeData: dataByPlace(csv),
-        methodology: data.data?.attributes?.Methodology,
+        methodology
       };
 
       return { success: true, data: dataSet };
