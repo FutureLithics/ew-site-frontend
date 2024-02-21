@@ -5,7 +5,7 @@ import MobileNavigation from "../Navigation/MobileNavigation";
 
 const dataNavigationElements = [
   { link: "/data/temperature", name: "Climate", subMenu: false },
-  { link: "/data/fragility", name: "Fragility", subMenu: false },
+  { link: "/data/fragility", name: "Income & Expenditure", subMenu: false },
   { link: "/data/networks", name: "Social Networks", subMenu: false },
 ];
 

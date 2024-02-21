@@ -11,6 +11,8 @@ import { fetchFragilityDataSet } from "@/app/utils/api";
 import LineChart from "../Charts/LineChart";
 import FragilityChoropleth from "../Charts/FragilityChoropleth";
 
+import Popup from "../Shared/Popup";
+
 const MainComponent = ({ properties }) => {
   const {
     keys,
@@ -52,6 +54,7 @@ const MainComponent = ({ properties }) => {
 const FragilityContainer = ({ collection, success }) => {
   // when fetching dataset from backend
   const [loading, setLoading] = useState(true);
+  const [methodology, setMethodology] = useState('');
 
   // used for rendering variable options
   const [dataSets, setDataSets] = useState(null);
@@ -99,7 +102,9 @@ const FragilityContainer = ({ collection, success }) => {
 
     const res = await fetchFragilityDataSet(id);
     const d = res.data;
+    const m = res?.methodology;
 
+    setMethodology(m);
     setData(d);
     setLoading(false);
   };
@@ -181,13 +186,20 @@ const FragilityContainer = ({ collection, success }) => {
         <Loader />
       ) : (
         <>
-          <Selector
-            collection={dataSetsForOptions(dataSets?.data)}
-            currentValue={dataSetIndex}
-            handler={dataSetSelectHandler}
-            label="Showing data for:"
-            classes="flex justify-between mb-6"
-          />
+          <div className="flex justify-center">
+            <Selector
+              collection={dataSetsForOptions(dataSets?.data)}
+              currentValue={dataSetIndex}
+              handler={dataSetSelectHandler}
+              label="Showing data for:"
+              classes="flex justify-between mb-6 me-2"
+            />
+            <Popup
+              title="Methodology"
+              buttonText={"Methodology"}
+              content={methodology}
+            />
+          </div>
           <MainComponent
             properties={{
               keys,
